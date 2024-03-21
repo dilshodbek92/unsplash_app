@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -15,9 +16,12 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  String? query;
   bool isLoading = true;
   List<PhotosRes> photos = [];
   List<SearchPhoto> searchPhotos = [];
+
+  final TextEditingController _queryController = TextEditingController();
 
   @override
   void initState() {
@@ -73,7 +77,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      // backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Container(
           height: 46,
@@ -83,6 +87,7 @@ class _SearchPageState extends State<SearchPage> {
               border:
                   Border.all(width: 1, color: Colors.grey.withOpacity(0.5))),
           child: TextField(
+            controller: _queryController,
             decoration: InputDecoration(
                 hintText: "Search photos, collections,users",
                 border: InputBorder.none,
@@ -127,19 +132,24 @@ class _SearchPageState extends State<SearchPage> {
           child: CachedNetworkImage(
             fit: BoxFit.cover,
             imageUrl: photos.urls.full,
-            placeholder: (context, urls) => CircularProgressIndicator(),
+            placeholder: (context, urls) => Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
             errorWidget: (context, urls, error) => Icon(Icons.error),
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
+                borderRadius: BorderRadius.circular(8),
                 image: DecorationImage(
                   image: imageProvider,
                   fit: BoxFit.cover,
                 ),
               ),
-
             ),
-
           ),
         ),
       ),
