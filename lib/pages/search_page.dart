@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:unsplash_app/models/search_photos_res.dart';
 import '../models/photos_res.dart';
 import '../services/http_service.dart';
+import 'details_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -26,8 +27,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _apiPhotos() async {
-    var response =
-        await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
+    var response = await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
     setState(() {
       photos = Network.parsePhotosList(response!);
       isLoading = false;
@@ -35,8 +35,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _apiSearchPhotos() async {
-    var response = await Network.GET(
-        Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos());
+    var response = await Network.GET(Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos());
     // LogService.d(response!);
     SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
     setState(() {
@@ -44,6 +43,24 @@ class _SearchPageState extends State<SearchPage> {
       isLoading = false;
     });
   }
+
+  Future<void> _handleRefresh() async {
+    _apiPhotos();
+  }
+
+  _callDetailsPage(PhotosRes photos) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return DetailsPage(photos: photos);
+        },
+      ),
+    );
+  }
+  // WidgetsBinding.instance!.addPostFrameCallback(() {
+  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => DetailsPage(photos: photos)));
+  // });
 
   @override
   Widget build(BuildContext context) {
@@ -69,24 +86,39 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-      body: MasonryGridView.count(
-        itemCount: photos.length,
-        crossAxisCount: 2,
-        itemBuilder: (context, index) {
-          return _itemOfPhotos(photos[index]);
-        },
+      body: Stack(
+        children: [
+          RefreshIndicator(
+            onRefresh: _handleRefresh,
+            child: MasonryGridView.count(
+              itemCount: photos.length,
+              crossAxisCount: 2,
+              itemBuilder: (context, index) {
+                return _itemOfPhotos(photos[index]);
+              },
+            ),
+          ),
+          isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : const SizedBox.shrink(),
+        ],
       ),
     );
   }
 
   Widget _itemOfPhotos(PhotosRes photos) {
-    return Container(
-      margin: const EdgeInsets.all(1),
-      child: CachedNetworkImage(
-        fit: BoxFit.cover,
-        imageUrl: photos.urls.full,
-        // placeholder: (context, urls) => CircularProgressIndicator(),
-        errorWidget: (context, urls, error) => Icon(Icons.error),
+    return GestureDetector(
+      onTap: _callDetailsPage(photos),
+      child: Container(
+        margin: const EdgeInsets.all(1),
+        child: CachedNetworkImage(
+          fit: BoxFit.cover,
+          imageUrl: photos.urls.full,
+          placeholder: (context, urls) => CircularProgressIndicator(),
+          errorWidget: (context, urls, error) => Icon(Icons.error),
+        ),
       ),
     );
   }

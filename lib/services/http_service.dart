@@ -10,8 +10,8 @@ class Network {
 
   /* Http Apis*/
   static String API_PHOTOS = "/photos";
-  static String API_COLLECTIONS = "/collections";
   static String API_SEARCH_PHOTOS = "/search/photos";
+  static String API_COLLECTIONS = "/collections";
 
   static Map<String, String> headers = {
     'Content-Type': 'application/json; charset=UTF-8'
@@ -20,7 +20,6 @@ class Network {
   /* Http Requests */
   static Future<String?> GET(String api, Map<String, String> params) async {
     var uri = Uri.https(BASE, api, params);
-    LogService.d(uri.toString());
     var response = await get(uri, headers: headers);
     if (response.statusCode == 200) {
       return response.body;

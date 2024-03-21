@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unsplash_app/pages/details_page.dart';
 import 'package:unsplash_app/pages/home_page.dart';
 
 void main() {
