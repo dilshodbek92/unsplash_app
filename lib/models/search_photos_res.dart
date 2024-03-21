@@ -4,36 +4,32 @@
 
 import 'dart:convert';
 
-SearchPhotosRes searchPhotosResFromJson(String str) =>
-    SearchPhotosRes.fromJson(json.decode(str));
+SearchPhotosRes searchPhotosResFromJson(String str) => SearchPhotosRes.fromJson(json.decode(str));
 
-String searchPhotosResToJson(SearchPhotosRes data) =>
-    json.encode(data.toJson());
+String searchPhotosResToJson(SearchPhotosRes data) => json.encode(data.toJson());
 
 class SearchPhotosRes {
   int total;
   int totalPages;
-  List<SearchPhoto> searchPhotos;
+  List<SearchPhoto> results;
 
   SearchPhotosRes({
     required this.total,
     required this.totalPages,
-    required this.searchPhotos,
+    required this.results,
   });
 
-  factory SearchPhotosRes.fromJson(Map<String, dynamic> json) =>
-      SearchPhotosRes(
-        total: json["total"],
-        totalPages: json["total_pages"],
-        searchPhotos: List<SearchPhoto>.from(
-            json["results"].map((x) => SearchPhoto.fromJson(x))),
-      );
+  factory SearchPhotosRes.fromJson(Map<String, dynamic> json) => SearchPhotosRes(
+    total: json["total"],
+    totalPages: json["total_pages"],
+    results: List<SearchPhoto>.from(json["results"].map((x) => SearchPhoto.fromJson(x))),
+  );
 
   Map<String, dynamic> toJson() => {
-        "total": total,
-        "total_pages": totalPages,
-        "results": List<dynamic>.from(searchPhotos.map((x) => x.toJson())),
-      };
+    "total": total,
+    "total_pages": totalPages,
+    "results": List<dynamic>.from(results.map((x) => x.toJson())),
+  };
 }
 
 class SearchPhoto {
@@ -88,112 +84,109 @@ class SearchPhoto {
   });
 
   factory SearchPhoto.fromJson(Map<String, dynamic> json) => SearchPhoto(
-        id: json["id"],
-        slug: json["slug"],
-        alternativeSlugs: AlternativeSlugs.fromJson(json["alternative_slugs"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        promotedAt: json["promoted_at"] == null
-            ? null
-            : DateTime.parse(json["promoted_at"]),
-        width: json["width"],
-        height: json["height"],
-        color: json["color"],
-        blurHash: json["blur_hash"],
-        description: json["description"],
-        altDescription: json["alt_description"],
-        breadcrumbs: List<Breadcrumb>.from(
-            json["breadcrumbs"].map((x) => Breadcrumb.fromJson(x))),
-        urls: Urls.fromJson(json["urls"]),
-        links: ResultLinks.fromJson(json["links"]),
-        likes: json["likes"],
-        likedByUser: json["liked_by_user"],
-        currentUserCollections:
-            List<dynamic>.from(json["current_user_collections"].map((x) => x)),
-        sponsorship: json["sponsorship"],
-        topicSubmissions:
-            ResultTopicSubmissions.fromJson(json["topic_submissions"]),
-        assetType: assetTypeValues.map[json["asset_type"]]!,
-        user: User.fromJson(json["user"]),
-        tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
-      );
+    id: json["id"],
+    slug: json["slug"],
+    alternativeSlugs: AlternativeSlugs.fromJson(json["alternative_slugs"]),
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    promotedAt: json["promoted_at"] == null ? null : DateTime.parse(json["promoted_at"]),
+    width: json["width"],
+    height: json["height"],
+    color: json["color"],
+    blurHash: json["blur_hash"],
+    description: json["description"],
+    altDescription: json["alt_description"],
+    breadcrumbs: List<Breadcrumb>.from(json["breadcrumbs"].map((x) => Breadcrumb.fromJson(x))),
+    urls: Urls.fromJson(json["urls"]),
+    links: ResultLinks.fromJson(json["links"]),
+    likes: json["likes"],
+    likedByUser: json["liked_by_user"],
+    currentUserCollections: List<dynamic>.from(json["current_user_collections"].map((x) => x)),
+    sponsorship: json["sponsorship"],
+    topicSubmissions: ResultTopicSubmissions.fromJson(json["topic_submissions"]),
+    assetType: assetTypeValues.map[json["asset_type"]]!,
+    user: User.fromJson(json["user"]),
+    tags: List<Tag>.from(json["tags"].map((x) => Tag.fromJson(x))),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "slug": slug,
-        "alternative_slugs": alternativeSlugs.toJson(),
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "promoted_at": promotedAt?.toIso8601String(),
-        "width": width,
-        "height": height,
-        "color": color,
-        "blur_hash": blurHash,
-        "description": description,
-        "alt_description": altDescription,
-        "breadcrumbs": List<dynamic>.from(breadcrumbs.map((x) => x.toJson())),
-        "urls": urls.toJson(),
-        "links": links.toJson(),
-        "likes": likes,
-        "liked_by_user": likedByUser,
-        "current_user_collections":
-            List<dynamic>.from(currentUserCollections.map((x) => x)),
-        "sponsorship": sponsorship,
-        "topic_submissions": topicSubmissions.toJson(),
-        "asset_type": assetTypeValues.reverse[assetType],
-        "user": user.toJson(),
-        "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
-      };
+    "id": id,
+    "slug": slug,
+    "alternative_slugs": alternativeSlugs.toJson(),
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "promoted_at": promotedAt?.toIso8601String(),
+    "width": width,
+    "height": height,
+    "color": color,
+    "blur_hash": blurHash,
+    "description": description,
+    "alt_description": altDescription,
+    "breadcrumbs": List<dynamic>.from(breadcrumbs.map((x) => x.toJson())),
+    "urls": urls.toJson(),
+    "links": links.toJson(),
+    "likes": likes,
+    "liked_by_user": likedByUser,
+    "current_user_collections": List<dynamic>.from(currentUserCollections.map((x) => x)),
+    "sponsorship": sponsorship,
+    "topic_submissions": topicSubmissions.toJson(),
+    "asset_type": assetTypeValues.reverse[assetType],
+    "user": user.toJson(),
+    "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
+  };
 }
 
 class AlternativeSlugs {
   String en;
-  String? es;
-  String? ja;
-  String? fr;
-  String? it;
-  String? ko;
-  String? de;
-  String? pt;
+  String es;
+  String ja;
+  String fr;
+  String it;
+  String ko;
+  String de;
+  String pt;
 
   AlternativeSlugs({
     required this.en,
-    this.es,
-    this.ja,
-    this.fr,
-    this.it,
-    this.ko,
-    this.de,
-    this.pt,
+    required this.es,
+    required this.ja,
+    required this.fr,
+    required this.it,
+    required this.ko,
+    required this.de,
+    required this.pt,
   });
 
-  factory AlternativeSlugs.fromJson(Map<String, dynamic> json) =>
-      AlternativeSlugs(
-        en: json["en"],
-        es: json["es"],
-        ja: json["ja"],
-        fr: json["fr"],
-        it: json["it"],
-        ko: json["ko"],
-        de: json["de"],
-        pt: json["pt"],
-      );
+  factory AlternativeSlugs.fromJson(Map<String, dynamic> json) => AlternativeSlugs(
+    en: json["en"],
+    es: json["es"],
+    ja: json["ja"],
+    fr: json["fr"],
+    it: json["it"],
+    ko: json["ko"],
+    de: json["de"],
+    pt: json["pt"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "en": en,
-        "es": es,
-        "ja": ja,
-        "fr": fr,
-        "it": it,
-        "ko": ko,
-        "de": de,
-        "pt": pt,
-      };
+    "en": en,
+    "es": es,
+    "ja": ja,
+    "fr": fr,
+    "it": it,
+    "ko": ko,
+    "de": de,
+    "pt": pt,
+  };
 }
 
-enum AssetType { PHOTO }
+enum AssetType {
+  PHOTO
+}
 
-final assetTypeValues = EnumValues({"photo": AssetType.PHOTO});
+final assetTypeValues = EnumValues({
+  "photo": AssetType.PHOTO
+});
 
 class Breadcrumb {
   String slug;
@@ -209,24 +202,29 @@ class Breadcrumb {
   });
 
   factory Breadcrumb.fromJson(Map<String, dynamic> json) => Breadcrumb(
-        slug: json["slug"],
-        title: json["title"],
-        index: json["index"],
-        type: typeValues.map[json["type"]]!,
-      );
+    slug: json["slug"],
+    title: json["title"],
+    index: json["index"],
+    type: typeValues.map[json["type"]]!,
+  );
 
   Map<String, dynamic> toJson() => {
-        "slug": slug,
-        "title": title,
-        "index": index,
-        "type": typeValues.reverse[type],
-      };
+    "slug": slug,
+    "title": title,
+    "index": index,
+    "type": typeValues.reverse[type],
+  };
 }
 
-enum Type { LANDING_PAGE, SEARCH }
+enum Type {
+  LANDING_PAGE,
+  SEARCH
+}
 
-final typeValues =
-    EnumValues({"landing_page": Type.LANDING_PAGE, "search": Type.SEARCH});
+final typeValues = EnumValues({
+  "landing_page": Type.LANDING_PAGE,
+  "search": Type.SEARCH
+});
 
 class ResultLinks {
   String self;
@@ -242,18 +240,18 @@ class ResultLinks {
   });
 
   factory ResultLinks.fromJson(Map<String, dynamic> json) => ResultLinks(
-        self: json["self"],
-        html: json["html"],
-        download: json["download"],
-        downloadLocation: json["download_location"],
-      );
+    self: json["self"],
+    html: json["html"],
+    download: json["download"],
+    downloadLocation: json["download_location"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "self": self,
-        "html": html,
-        "download": download,
-        "download_location": downloadLocation,
-      };
+    "self": self,
+    "html": html,
+    "download": download,
+    "download_location": downloadLocation,
+  };
 }
 
 class Tag {
@@ -268,16 +266,16 @@ class Tag {
   });
 
   factory Tag.fromJson(Map<String, dynamic> json) => Tag(
-        type: typeValues.map[json["type"]]!,
-        title: json["title"],
-        source: json["source"] == null ? null : Source.fromJson(json["source"]),
-      );
+    type: typeValues.map[json["type"]]!,
+    title: json["title"],
+    source: json["source"] == null ? null : Source.fromJson(json["source"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "type": typeValues.reverse[type],
-        "title": title,
-        "source": source?.toJson(),
-      };
+    "type": typeValues.reverse[type],
+    "title": title,
+    "source": source?.toJson(),
+  };
 }
 
 class Source {
@@ -300,50 +298,48 @@ class Source {
   });
 
   factory Source.fromJson(Map<String, dynamic> json) => Source(
-        ancestry: Ancestry.fromJson(json["ancestry"]),
-        title: json["title"],
-        subtitle: json["subtitle"],
-        description: json["description"],
-        metaTitle: json["meta_title"],
-        metaDescription: json["meta_description"],
-        coverPhoto: CoverPhoto.fromJson(json["cover_photo"]),
-      );
+    ancestry: Ancestry.fromJson(json["ancestry"]),
+    title: json["title"],
+    subtitle: json["subtitle"],
+    description: json["description"],
+    metaTitle: json["meta_title"],
+    metaDescription: json["meta_description"],
+    coverPhoto: CoverPhoto.fromJson(json["cover_photo"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "ancestry": ancestry.toJson(),
-        "title": title,
-        "subtitle": subtitle,
-        "description": description,
-        "meta_title": metaTitle,
-        "meta_description": metaDescription,
-        "cover_photo": coverPhoto.toJson(),
-      };
+    "ancestry": ancestry.toJson(),
+    "title": title,
+    "subtitle": subtitle,
+    "description": description,
+    "meta_title": metaTitle,
+    "meta_description": metaDescription,
+    "cover_photo": coverPhoto?.toJson(),
+  };
 }
 
 class Ancestry {
   Category type;
   Category category;
-  Category? subcategory;
+  Category subcategory;
 
   Ancestry({
     required this.type,
     required this.category,
-    this.subcategory,
+    required this.subcategory,
   });
 
   factory Ancestry.fromJson(Map<String, dynamic> json) => Ancestry(
-        type: Category.fromJson(json["type"]),
-        category: Category.fromJson(json["category"]),
-        subcategory: json["subcategory"] == null
-            ? null
-            : Category.fromJson(json["subcategory"]),
-      );
+    type: Category.fromJson(json["type"]),
+    category: Category.fromJson(json["category"]),
+    subcategory: Category.fromJson(json["subcategory"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "type": type.toJson(),
-        "category": category.toJson(),
-        "subcategory": subcategory?.toJson(),
-      };
+    "type": type.toJson(),
+    "category": category.toJson(),
+    "subcategory": subcategory.toJson(),
+  };
 }
 
 class Category {
@@ -356,14 +352,14 @@ class Category {
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
-        slug: json["slug"],
-        prettySlug: json["pretty_slug"],
-      );
+    slug: json["slug"],
+    prettySlug: json["pretty_slug"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "slug": slug,
-        "pretty_slug": prettySlug,
-      };
+    "slug": slug,
+    "pretty_slug": prettySlug,
+  };
 }
 
 class CoverPhoto {
@@ -377,7 +373,7 @@ class CoverPhoto {
   int height;
   String color;
   String blurHash;
-  String description;
+  dynamic description;
   String altDescription;
   List<Breadcrumb> breadcrumbs;
   Urls urls;
@@ -387,7 +383,7 @@ class CoverPhoto {
   List<dynamic> currentUserCollections;
   dynamic sponsorship;
   CoverPhotoTopicSubmissions topicSubmissions;
-  AssetType? assetType;
+  AssetType assetType;
   bool premium;
   bool plus;
   User user;
@@ -413,134 +409,105 @@ class CoverPhoto {
     required this.currentUserCollections,
     required this.sponsorship,
     required this.topicSubmissions,
-    this.assetType,
+    required this.assetType,
     required this.premium,
     required this.plus,
     required this.user,
   });
 
   factory CoverPhoto.fromJson(Map<String, dynamic> json) => CoverPhoto(
-        id: json["id"],
-        slug: json["slug"],
-        alternativeSlugs: AlternativeSlugs.fromJson(json["alternative_slugs"]),
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        promotedAt: json["promoted_at"] == null
-            ? null
-            : DateTime.parse(json["promoted_at"]),
-        width: json["width"],
-        height: json["height"],
-        color: json["color"],
-        blurHash: json["blur_hash"],
-        description: json["description"],
-        altDescription: json["alt_description"],
-        breadcrumbs: List<Breadcrumb>.from(
-            json["breadcrumbs"].map((x) => Breadcrumb.fromJson(x))),
-        urls: Urls.fromJson(json["urls"]),
-        links: ResultLinks.fromJson(json["links"]),
-        likes: json["likes"],
-        likedByUser: json["liked_by_user"],
-        currentUserCollections:
-            List<dynamic>.from(json["current_user_collections"].map((x) => x)),
-        sponsorship: json["sponsorship"],
-        topicSubmissions:
-            CoverPhotoTopicSubmissions.fromJson(json["topic_submissions"]),
-        assetType: assetTypeValues.map[json["asset_type"]],
-        premium: json["premium"],
-        plus: json["plus"],
-        user: User.fromJson(json["user"]),
-      );
+    id: json["id"],
+    slug: json["slug"],
+    alternativeSlugs: AlternativeSlugs.fromJson(json["alternative_slugs"]),
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    promotedAt: DateTime.parse(json["promoted_at"]),
+    width: json["width"],
+    height: json["height"],
+    color: json["color"],
+    blurHash: json["blur_hash"],
+    description: json["description"],
+    altDescription: json["alt_description"],
+    breadcrumbs: List<Breadcrumb>.from(json["breadcrumbs"].map((x) => Breadcrumb.fromJson(x))),
+    urls: Urls.fromJson(json["urls"]),
+    links: ResultLinks.fromJson(json["links"]),
+    likes: json["likes"],
+    likedByUser: json["liked_by_user"],
+    currentUserCollections: List<dynamic>.from(json["current_user_collections"].map((x) => x)),
+    sponsorship: json["sponsorship"],
+    topicSubmissions: CoverPhotoTopicSubmissions.fromJson(json["topic_submissions"]),
+    assetType: assetTypeValues.map[json["asset_type"]]!,
+    premium: json["premium"],
+    plus: json["plus"],
+    user: User.fromJson(json["user"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "slug": slug,
-        "alternative_slugs": alternativeSlugs.toJson(),
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "promoted_at": promotedAt?.toIso8601String(),
-        "width": width,
-        "height": height,
-        "color": color,
-        "blur_hash": blurHash,
-        "description": description,
-        "alt_description": altDescription,
-        "breadcrumbs": List<dynamic>.from(breadcrumbs.map((x) => x.toJson())),
-        "urls": urls.toJson(),
-        "links": links.toJson(),
-        "likes": likes,
-        "liked_by_user": likedByUser,
-        "current_user_collections":
-            List<dynamic>.from(currentUserCollections.map((x) => x)),
-        "sponsorship": sponsorship,
-        "topic_submissions": topicSubmissions.toJson(),
-        "asset_type": assetTypeValues.reverse[assetType],
-        "premium": premium,
-        "plus": plus,
-        "user": user.toJson(),
-      };
+    "id": id,
+    "slug": slug,
+    "alternative_slugs": alternativeSlugs.toJson(),
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "promoted_at": promotedAt?.toIso8601String(),
+    "width": width,
+    "height": height,
+    "color": color,
+    "blur_hash": blurHash,
+    "description": description,
+    "alt_description": altDescription,
+    "breadcrumbs": List<dynamic>.from(breadcrumbs.map((x) => x.toJson())),
+    "urls": urls.toJson(),
+    "links": links.toJson(),
+    "likes": likes,
+    "liked_by_user": likedByUser,
+    "current_user_collections": List<dynamic>.from(currentUserCollections.map((x) => x)),
+    "sponsorship": sponsorship,
+    "topic_submissions": topicSubmissions.toJson(),
+    "asset_type": assetTypeValues.reverse[assetType],
+    "premium": premium,
+    "plus": plus,
+    "user": user.toJson(),
+  };
 }
 
 class CoverPhotoTopicSubmissions {
-  CurrentEvents? experimental;
-  CurrentEvents? nature;
-  CurrentEvents? wallpapers;
-  CurrentEvents? currentEvents;
-  CurrentEvents? texturesPatterns;
+  Blue? wallpapers;
+  Blue? spirituality;
 
   CoverPhotoTopicSubmissions({
-    this.experimental,
-    this.nature,
     this.wallpapers,
-    this.currentEvents,
-    this.texturesPatterns,
+    this.spirituality,
   });
 
-  factory CoverPhotoTopicSubmissions.fromJson(Map<String, dynamic> json) =>
-      CoverPhotoTopicSubmissions(
-        experimental: json["experimental"] == null
-            ? null
-            : CurrentEvents.fromJson(json["experimental"]),
-        nature: json["nature"] == null
-            ? null
-            : CurrentEvents.fromJson(json["nature"]),
-        wallpapers: json["wallpapers"] == null
-            ? null
-            : CurrentEvents.fromJson(json["wallpapers"]),
-        currentEvents: json["current-events"] == null
-            ? null
-            : CurrentEvents.fromJson(json["current-events"]),
-        texturesPatterns: json["textures-patterns"] == null
-            ? null
-            : CurrentEvents.fromJson(json["textures-patterns"]),
-      );
+  factory CoverPhotoTopicSubmissions.fromJson(Map<String, dynamic> json) => CoverPhotoTopicSubmissions(
+    wallpapers: json["wallpapers"] == null ? null : Blue.fromJson(json["wallpapers"]),
+    spirituality: json["spirituality"] == null ? null : Blue.fromJson(json["spirituality"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "experimental": experimental?.toJson(),
-        "nature": nature?.toJson(),
-        "wallpapers": wallpapers?.toJson(),
-        "current-events": currentEvents?.toJson(),
-        "textures-patterns": texturesPatterns?.toJson(),
-      };
+    "wallpapers": wallpapers?.toJson(),
+    "spirituality": spirituality?.toJson(),
+  };
 }
 
-class CurrentEvents {
+class Blue {
   String status;
   DateTime approvedOn;
 
-  CurrentEvents({
+  Blue({
     required this.status,
     required this.approvedOn,
   });
 
-  factory CurrentEvents.fromJson(Map<String, dynamic> json) => CurrentEvents(
-        status: json["status"],
-        approvedOn: DateTime.parse(json["approved_on"]),
-      );
+  factory Blue.fromJson(Map<String, dynamic> json) => Blue(
+    status: json["status"],
+    approvedOn: DateTime.parse(json["approved_on"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "status": status,
-        "approved_on": approvedOn.toIso8601String(),
-      };
+    "status": status,
+    "approved_on": approvedOn.toIso8601String(),
+  };
 }
 
 class Urls {
@@ -561,22 +528,22 @@ class Urls {
   });
 
   factory Urls.fromJson(Map<String, dynamic> json) => Urls(
-        raw: json["raw"],
-        full: json["full"],
-        regular: json["regular"],
-        small: json["small"],
-        thumb: json["thumb"],
-        smallS3: json["small_s3"],
-      );
+    raw: json["raw"],
+    full: json["full"],
+    regular: json["regular"],
+    small: json["small"],
+    thumb: json["thumb"],
+    smallS3: json["small_s3"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "raw": raw,
-        "full": full,
-        "regular": regular,
-        "small": small,
-        "thumb": thumb,
-        "small_s3": smallS3,
-      };
+    "raw": raw,
+    "full": full,
+    "regular": regular,
+    "small": small,
+    "thumb": thumb,
+    "small_s3": smallS3,
+  };
 }
 
 class User {
@@ -585,11 +552,11 @@ class User {
   String username;
   String name;
   String firstName;
-  String? lastName;
+  String lastName;
   String? twitterUsername;
   String? portfolioUrl;
   String? bio;
-  String location;
+  String? location;
   UserLinks links;
   ProfileImage profileImage;
   String? instagramUsername;
@@ -625,50 +592,50 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        updatedAt: DateTime.parse(json["updated_at"]),
-        username: json["username"],
-        name: json["name"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        twitterUsername: json["twitter_username"],
-        portfolioUrl: json["portfolio_url"],
-        bio: json["bio"],
-        location: json["location"],
-        links: UserLinks.fromJson(json["links"]),
-        profileImage: ProfileImage.fromJson(json["profile_image"]),
-        instagramUsername: json["instagram_username"],
-        totalCollections: json["total_collections"],
-        totalLikes: json["total_likes"],
-        totalPhotos: json["total_photos"],
-        totalPromotedPhotos: json["total_promoted_photos"],
-        acceptedTos: json["accepted_tos"],
-        forHire: json["for_hire"],
-        social: Social.fromJson(json["social"]),
-      );
+    id: json["id"],
+    updatedAt: DateTime.parse(json["updated_at"]),
+    username: json["username"],
+    name: json["name"],
+    firstName: json["first_name"],
+    lastName: json["last_name"],
+    twitterUsername: json["twitter_username"],
+    portfolioUrl: json["portfolio_url"],
+    bio: json["bio"],
+    location: json["location"],
+    links: UserLinks.fromJson(json["links"]),
+    profileImage: ProfileImage.fromJson(json["profile_image"]),
+    instagramUsername: json["instagram_username"],
+    totalCollections: json["total_collections"],
+    totalLikes: json["total_likes"],
+    totalPhotos: json["total_photos"],
+    totalPromotedPhotos: json["total_promoted_photos"],
+    acceptedTos: json["accepted_tos"],
+    forHire: json["for_hire"],
+    social: Social.fromJson(json["social"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "updated_at": updatedAt.toIso8601String(),
-        "username": username,
-        "name": name,
-        "first_name": firstName,
-        "last_name": lastName,
-        "twitter_username": twitterUsername,
-        "portfolio_url": portfolioUrl,
-        "bio": bio,
-        "location": location,
-        "links": links.toJson(),
-        "profile_image": profileImage.toJson(),
-        "instagram_username": instagramUsername,
-        "total_collections": totalCollections,
-        "total_likes": totalLikes,
-        "total_photos": totalPhotos,
-        "total_promoted_photos": totalPromotedPhotos,
-        "accepted_tos": acceptedTos,
-        "for_hire": forHire,
-        "social": social.toJson(),
-      };
+    "id": id,
+    "updated_at": updatedAt.toIso8601String(),
+    "username": username,
+    "name": name,
+    "first_name": firstName,
+    "last_name": lastName,
+    "twitter_username": twitterUsername,
+    "portfolio_url": portfolioUrl,
+    "bio": bio,
+    "location": location,
+    "links": links.toJson(),
+    "profile_image": profileImage.toJson(),
+    "instagram_username": instagramUsername,
+    "total_collections": totalCollections,
+    "total_likes": totalLikes,
+    "total_photos": totalPhotos,
+    "total_promoted_photos": totalPromotedPhotos,
+    "accepted_tos": acceptedTos,
+    "for_hire": forHire,
+    "social": social.toJson(),
+  };
 }
 
 class UserLinks {
@@ -691,24 +658,24 @@ class UserLinks {
   });
 
   factory UserLinks.fromJson(Map<String, dynamic> json) => UserLinks(
-        self: json["self"],
-        html: json["html"],
-        photos: json["photos"],
-        likes: json["likes"],
-        portfolio: json["portfolio"],
-        following: json["following"],
-        followers: json["followers"],
-      );
+    self: json["self"],
+    html: json["html"],
+    photos: json["photos"],
+    likes: json["likes"],
+    portfolio: json["portfolio"],
+    following: json["following"],
+    followers: json["followers"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "self": self,
-        "html": html,
-        "photos": photos,
-        "likes": likes,
-        "portfolio": portfolio,
-        "following": following,
-        "followers": followers,
-      };
+    "self": self,
+    "html": html,
+    "photos": photos,
+    "likes": likes,
+    "portfolio": portfolio,
+    "following": following,
+    "followers": followers,
+  };
 }
 
 class ProfileImage {
@@ -723,16 +690,16 @@ class ProfileImage {
   });
 
   factory ProfileImage.fromJson(Map<String, dynamic> json) => ProfileImage(
-        small: json["small"],
-        medium: json["medium"],
-        large: json["large"],
-      );
+    small: json["small"],
+    medium: json["medium"],
+    large: json["large"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "small": small,
-        "medium": medium,
-        "large": large,
-      };
+    "small": small,
+    "medium": medium,
+    "large": large,
+  };
 }
 
 class Social {
@@ -749,65 +716,42 @@ class Social {
   });
 
   factory Social.fromJson(Map<String, dynamic> json) => Social(
-        instagramUsername: json["instagram_username"],
-        portfolioUrl: json["portfolio_url"],
-        twitterUsername: json["twitter_username"],
-        paypalEmail: json["paypal_email"],
-      );
+    instagramUsername: json["instagram_username"],
+    portfolioUrl: json["portfolio_url"],
+    twitterUsername: json["twitter_username"],
+    paypalEmail: json["paypal_email"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "instagram_username": instagramUsername,
-        "portfolio_url": portfolioUrl,
-        "twitter_username": twitterUsername,
-        "paypal_email": paypalEmail,
-      };
+    "instagram_username": instagramUsername,
+    "portfolio_url": portfolioUrl,
+    "twitter_username": twitterUsername,
+    "paypal_email": paypalEmail,
+  };
 }
 
 class ResultTopicSubmissions {
-  Experimental? wallpapers;
-  Experimental? nature;
-  Experimental? experimental;
+  Blue? blue;
+  Blue? streetPhotography;
+  Blue? experimental;
 
   ResultTopicSubmissions({
-    this.wallpapers,
-    this.nature,
+    this.blue,
+    this.streetPhotography,
     this.experimental,
   });
 
-  factory ResultTopicSubmissions.fromJson(Map<String, dynamic> json) =>
-      ResultTopicSubmissions(
-        wallpapers: json["wallpapers"] == null
-            ? null
-            : Experimental.fromJson(json["wallpapers"]),
-        nature: json["nature"] == null
-            ? null
-            : Experimental.fromJson(json["nature"]),
-        experimental: json["experimental"] == null
-            ? null
-            : Experimental.fromJson(json["experimental"]),
-      );
+  factory ResultTopicSubmissions.fromJson(Map<String, dynamic> json) => ResultTopicSubmissions(
+    blue: json["blue"] == null ? null : Blue.fromJson(json["blue"]),
+    streetPhotography: json["street-photography"] == null ? null : Blue.fromJson(json["street-photography"]),
+    experimental: json["experimental"] == null ? null : Blue.fromJson(json["experimental"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "wallpapers": wallpapers?.toJson(),
-        "nature": nature?.toJson(),
-        "experimental": experimental?.toJson(),
-      };
-}
-
-class Experimental {
-  String status;
-
-  Experimental({
-    required this.status,
-  });
-
-  factory Experimental.fromJson(Map<String, dynamic> json) => Experimental(
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "status": status,
-      };
+    "blue": blue?.toJson(),
+    "street-photography": streetPhotography?.toJson(),
+    "experimental": experimental?.toJson(),
+  };
 }
 
 class EnumValues<T> {
