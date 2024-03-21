@@ -98,12 +98,15 @@ class _SearchPageState extends State<SearchPage> {
         children: [
           RefreshIndicator(
             onRefresh: _handleRefresh,
-            child: MasonryGridView.count(
-              itemCount: photos.length,
-              crossAxisCount: 2,
-              itemBuilder: (context, index) {
-                return _itemOfPhotos(photos[index]);
-              },
+            child: Container(
+              padding: EdgeInsets.only(right: 5),
+              child: MasonryGridView.count(
+                itemCount: photos.length,
+                crossAxisCount: 2,
+                itemBuilder: (context, index) {
+                  return _itemOfPhotos(photos[index]);
+                },
+              ),
             ),
           ),
           isLoading
@@ -115,15 +118,29 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _itemOfPhotos(PhotosRes photos) {
-    return GestureDetector(
-      // onTap: _callDetailsPage(),
-      child: Container(
-        margin: const EdgeInsets.all(1),
-        child: CachedNetworkImage(
-          fit: BoxFit.cover,
-          imageUrl: photos.urls.full,
-          placeholder: (context, urls) => CircularProgressIndicator(),
-          errorWidget: (context, urls, error) => Icon(Icons.error),
+    return AspectRatio(
+      aspectRatio: photos.width.toDouble() / photos.height.toDouble(),
+      child: GestureDetector(
+        // onTap: _callDetailsPage(),
+        child: Container(
+          margin: const EdgeInsets.only(top: 5, left: 5),
+          child: CachedNetworkImage(
+            fit: BoxFit.cover,
+            imageUrl: photos.urls.full,
+            placeholder: (context, urls) => CircularProgressIndicator(),
+            errorWidget: (context, urls, error) => Icon(Icons.error),
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+
+            ),
+
+          ),
         ),
       ),
     );
