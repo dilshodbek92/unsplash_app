@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unsplash_app/pages/collection_page.dart';
+import 'package:unsplash_app/pages/details_page.dart';
 import 'package:unsplash_app/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,9 +21,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const List<Widget> pages = <Widget>[
+     List<Widget> pages = <Widget>[
       SearchPage(),
       CollectionPage(),
+       DetailsPage(),
     ];
     return Scaffold(
       body: Center(

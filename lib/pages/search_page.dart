@@ -122,11 +122,11 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget _itemOfPhotos(PhotosRes photos) {
+  Widget _itemOfPhotos(PhotosRes photos)  {
     return AspectRatio(
       aspectRatio: photos.width.toDouble() / photos.height.toDouble(),
       child: GestureDetector(
-        // onTap: _callDetailsPage(),
+         onTap: _callDetailsPage(),
         child: Container(
           margin: const EdgeInsets.only(top: 5, left: 5),
           child: CachedNetworkImage(
