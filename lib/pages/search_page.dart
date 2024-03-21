@@ -58,6 +58,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
+
   // WidgetsBinding.instance!.addPostFrameCallback(() {
   // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => DetailsPage(photos: photos)));
   // });
