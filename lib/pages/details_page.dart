@@ -17,13 +17,14 @@ class _DetailsPageState extends State<DetailsPage> {
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/cat.png'),
                     fit: BoxFit.cover
                 )
             ),
           ),
+          Container(),
         ],
       ),
     );

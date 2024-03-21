@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unsplash_app/pages/details_page.dart';
+import 'package:unsplash_app/pages/details.page.dart';
 import 'package:unsplash_app/pages/home_page.dart';
 
 void main() {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: Detailspage(),
     );
   }
 }
