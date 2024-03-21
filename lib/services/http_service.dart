@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:unsplash_app/services/log_service.dart';
+import '../models/collections_res.dart';
 import '../models/photos_res.dart';
 import '../models/search_photos_res.dart';
 
@@ -49,6 +50,14 @@ class Network {
     return params;
   }
 
+  static Map<String, String> paramsCollections() {
+    Map<String, String> params = {};
+    params.addAll({
+      'client_id': CLIENT_ID
+    });
+    return params;
+  }
+
   /* Http Parsing */
   static List<PhotosRes> parsePhotosList(String response) {
     dynamic json = jsonDecode(response);
@@ -58,5 +67,10 @@ class Network {
   static SearchPhotosRes parseSearchPhotos(String response) {
     dynamic json = jsonDecode(response);
     return SearchPhotosRes.fromJson(json);
+  }
+
+  static List<CollectionsRes> parseCollections(String response) {
+    dynamic json = jsonDecode(response);
+    return List<CollectionsRes>.from(json.map((x) => CollectionsRes.fromJson(x)));
   }
 }

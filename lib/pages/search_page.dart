@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:unsplash_app/models/search_photos_res.dart';
 import '../models/photos_res.dart';
@@ -22,12 +23,17 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _apiPhotos();
     // _apiSearchPhotos();
+    _apiPhotos();
+
+    // SchedulerBinding.instance.scheduleFrameCallback((timeStamp) {
+    //   _callDetailsPage();
+    // });
   }
 
   _apiPhotos() async {
-    var response = await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
+    var response =
+        await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
     setState(() {
       photos = Network.parsePhotosList(response!);
       isLoading = false;
@@ -35,7 +41,8 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _apiSearchPhotos() async {
-    var response = await Network.GET(Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos());
+    var response = await Network.GET(
+        Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos());
     // LogService.d(response!);
     SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
     setState(() {
@@ -48,12 +55,12 @@ class _SearchPageState extends State<SearchPage> {
     _apiPhotos();
   }
 
-  _callDetailsPage(PhotosRes photos) {
+  _callDetailsPage() {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return DetailsPage(photos: photos);
+          return DetailsPage();
         },
       ),
     );
@@ -100,9 +107,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? const Center(child: CircularProgressIndicator())
               : const SizedBox.shrink(),
         ],
       ),
@@ -111,7 +116,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _itemOfPhotos(PhotosRes photos) {
     return GestureDetector(
-      onTap: _callDetailsPage(photos),
+      // onTap: _callDetailsPage(),
       child: Container(
         margin: const EdgeInsets.all(1),
         child: CachedNetworkImage(

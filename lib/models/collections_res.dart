@@ -820,7 +820,7 @@ class SourceCoverPhoto {
     currentUserCollections: List<dynamic>.from(json["current_user_collections"].map((x) => x)),
     sponsorship: json["sponsorship"],
     topicSubmissions: FluffyTopicSubmissions.fromJson(json["topic_submissions"]),
-    assetType: assetTypeValues.map[json["asset_type"]]!,
+    assetType: assetTypeValues.map[json["asset_type"]],
     premium: json["premium"],
     plus: json["plus"],
     user: User.fromJson(json["user"]),

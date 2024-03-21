@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/photos_res.dart';
 
 class DetailsPage extends StatefulWidget {
-  final PhotosRes photos;
-  const DetailsPage({super.key, required this.photos});
+  // final PhotosRes photos;
+  const DetailsPage({super.key});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
