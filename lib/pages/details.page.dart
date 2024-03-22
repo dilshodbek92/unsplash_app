@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unsplash_app/pages/info_button_page.dart';
 
 class Detailspage extends StatefulWidget {
   const Detailspage({super.key});
@@ -7,10 +8,27 @@ class Detailspage extends StatefulWidget {
   State<Detailspage> createState() => _DetailspageState();
 }
 
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => InfoButtonPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.easeInOut;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  );
+}
+
+
 class _DetailspageState extends State<Detailspage> {
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +37,7 @@ class _DetailspageState extends State<Detailspage> {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 image: DecorationImage(
                     opacity: 0.3,
                     image: AssetImage(
@@ -32,19 +50,24 @@ class _DetailspageState extends State<Detailspage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
+                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.arrow_back_ios_new_outlined,
+                    IconButton(
+                      onPressed: (){
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.arrow_back_ios_new_outlined),
                       color: Colors.white,
-                      size: 30,
                     ),
-                    Icon(
-                      Icons.info_outline,
+                    IconButton(
+                      onPressed: () {
+                        // Navigate to the new page with slide transition
+                        Navigator.of(context).push(_createRoute());
+                      },
+                      icon: Icon(Icons.info_outline_rounded),
                       color: Colors.white,
-                      size: 30,
-                    )
+                    ),
                   ],
                 ),
                 const Column(
@@ -55,7 +78,7 @@ class _DetailspageState extends State<Detailspage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.ios_share_outlined,
                       color: Colors.white,
                       size: 30,
@@ -86,7 +109,7 @@ class _DetailspageState extends State<Detailspage> {
                             ),
                             height: 50,
                             width: 50,
-                            child: const Icon(
+                            child: Icon(
                               Icons.add,
                               color: Colors.white,
                             ),
@@ -101,7 +124,7 @@ class _DetailspageState extends State<Detailspage> {
                             ),
                             height: 50,
                             width: 50,
-                            child: const Icon(
+                            child: Icon(
                               Icons.arrow_downward_outlined,
                               color: Colors.black,
                             ),
