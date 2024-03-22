@@ -33,6 +33,8 @@ class Network {
   static Map<String, String> paramsPhotos() {
     Map<String, String> params = {};
     params.addAll({
+      'page': '1',
+      'per_page': '20',
       'client_id': CLIENT_ID
     });
     return params;

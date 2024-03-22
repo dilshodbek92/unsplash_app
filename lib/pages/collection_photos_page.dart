@@ -27,7 +27,7 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
 
   _apiCollectionPhotos() async {
     var response =
-    await Network.GET(Network.API_COLLECTIONS_PHOTOS, Network.paramsCollectionsPhotos());
+    await Network.GET(Network.API_COLLECTIONS_PHOTOS.replaceFirst(':id', '2'), Network.paramsCollectionsPhotos());
     print(response);
     LogService.d(response!);
     setState(() {

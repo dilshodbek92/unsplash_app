@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:unsplash_app/models/search_photos_res.dart';
 import '../models/photos_res.dart';
@@ -18,7 +19,7 @@ class _SearchPageState extends State<SearchPage> {
   String? query;
   bool isLoading = true;
   List<PhotosRes> photos = [];
-  List<SearchPhoto> searchPhotos = [];
+  // List<SearchPhoto> searchPhotos = [];
 
   final TextEditingController _queryController = TextEditingController();
 
@@ -29,10 +30,10 @@ class _SearchPageState extends State<SearchPage> {
     _apiPhotos();
   }
 
-  void _searchPhotos() {
-    query = _queryController.text;
-    _apiSearchPhotos(query!);
-  }
+  // void _searchPhotos() {
+  //   query = _queryController.text;
+  //   _apiSearchPhotos(query!);
+  // }
 
   _apiPhotos() async {
     var response =
@@ -44,20 +45,20 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  _apiSearchPhotos(String? query) async {
-    var response = await Network.GET(
-        Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query!));
-    LogService.d(response!);
-    LogService.d(query);
-
-    SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response);
-    setState(() {
-      searchPhotos = searchPhotosRes.results;
-      isLoading = false;
-    });
-    query = null;
-    LogService.d(query!);
-  }
+  // _apiSearchPhotos(String? query) async {
+  //   var response = await Network.GET(
+  //       Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query!));
+  //   LogService.d(response!);
+  //   LogService.d(query);
+  //
+  //   SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response);
+  //   setState(() {
+  //     searchPhotos = searchPhotosRes.results;
+  //     isLoading = false;
+  //   });
+  //   query = null;
+  //   LogService.d(query!);
+  // }
 
   Future<void> _handleRefresh() async {
     _apiPhotos();
@@ -68,7 +69,7 @@ class _SearchPageState extends State<SearchPage> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return  DetailsPage();
+          return DetailsPage();
         },
       ),
     );
@@ -87,7 +88,7 @@ class _SearchPageState extends State<SearchPage> {
                   Border.all(width: 1, color: Colors.grey.withOpacity(0.5))),
           child: TextField(
             onSubmitted: (value) {
-              _searchPhotos();
+              // _searchPhotos();
             },
             controller: _queryController,
             decoration: InputDecoration(
@@ -103,19 +104,14 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Stack(
         children: [
-          RefreshIndicator(
-            onRefresh: _handleRefresh,
-            child: Container(
-              padding: const EdgeInsets.only(right: 5),
-              child: MasonryGridView.count(
-                itemCount: query == null ? photos.length : searchPhotos.length,
-                crossAxisCount: 2,
-                itemBuilder: (context, index) {
-                  return query == null
-                      ? _itemOfPhotos(photos[index])
-                      : _itemOfSearchPhotos(searchPhotos[index]);
-                },
-              ),
+          Container(
+            padding: const EdgeInsets.only(right: 5),
+            child: MasonryGridView.count(
+              itemCount: photos.length,
+              crossAxisCount: 2,
+              itemBuilder: (context, index) {
+                return _itemOfPhotos(photos[index]);
+              },
             ),
           ),
           isLoading
@@ -127,10 +123,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _itemOfPhotos(PhotosRes photos) {
-    return AspectRatio(
-      aspectRatio: photos.width.toDouble() / photos.height.toDouble(),
-      child: GestureDetector(
-        // onTap: _callDetailsPage(),
+    return GestureDetector(
+      onTap: (){
+        _callDetailsPage();
+      },
+      child: AspectRatio(
+        aspectRatio: photos.width.toDouble() / photos.height.toDouble(),
         child: Container(
           margin: const EdgeInsets.only(top: 5, left: 5),
           child: CachedNetworkImage(

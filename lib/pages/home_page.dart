@@ -14,6 +14,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Widget> pages = <Widget>[
+    SearchPage(),
+    CollectionPage(),
+  ];
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -24,10 +28,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const List<Widget> pages = <Widget>[
-      SearchPage(),
-      CollectionPage(),
-    ];
     return Scaffold(
       body: Center(
         child: pages.elementAt(_selectedIndex),
