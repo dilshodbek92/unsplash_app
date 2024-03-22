@@ -13,26 +13,26 @@ String searchPhotosResToJson(SearchPhotosRes data) =>
 class SearchPhotosRes {
   int total;
   int totalPages;
-  List<SearchPhoto> searchPhotos;
+  List<SearchPhoto> results;
 
   SearchPhotosRes({
     required this.total,
     required this.totalPages,
-    required this.searchPhotos,
+    required this.results,
   });
 
   factory SearchPhotosRes.fromJson(Map<String, dynamic> json) =>
       SearchPhotosRes(
         total: json["total"],
         totalPages: json["total_pages"],
-        searchPhotos: List<SearchPhoto>.from(
+        results: List<SearchPhoto>.from(
             json["results"].map((x) => SearchPhoto.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "total": total,
         "total_pages": totalPages,
-        "results": List<dynamic>.from(searchPhotos.map((x) => x.toJson())),
+        "results": List<dynamic>.from(results.map((x) => x.toJson())),
       };
 }
 
@@ -148,23 +148,23 @@ class SearchPhoto {
 
 class AlternativeSlugs {
   String en;
-  String? es;
-  String? ja;
-  String? fr;
-  String? it;
-  String? ko;
-  String? de;
-  String? pt;
+  String es;
+  String ja;
+  String fr;
+  String it;
+  String ko;
+  String de;
+  String pt;
 
   AlternativeSlugs({
     required this.en,
-    this.es,
-    this.ja,
-    this.fr,
-    this.it,
-    this.ko,
-    this.de,
-    this.pt,
+    required this.es,
+    required this.ja,
+    required this.fr,
+    required this.it,
+    required this.ko,
+    required this.de,
+    required this.pt,
   });
 
   factory AlternativeSlugs.fromJson(Map<String, dynamic> json) =>
@@ -323,26 +323,24 @@ class Source {
 class Ancestry {
   Category type;
   Category category;
-  Category? subcategory;
+  Category subcategory;
 
   Ancestry({
     required this.type,
     required this.category,
-    this.subcategory,
+    required this.subcategory,
   });
 
   factory Ancestry.fromJson(Map<String, dynamic> json) => Ancestry(
         type: Category.fromJson(json["type"]),
         category: Category.fromJson(json["category"]),
-        subcategory: json["subcategory"] == null
-            ? null
-            : Category.fromJson(json["subcategory"]),
+        subcategory: Category.fromJson(json["subcategory"]),
       );
 
   Map<String, dynamic> toJson() => {
         "type": type.toJson(),
         "category": category.toJson(),
-        "subcategory": subcategory?.toJson(),
+        "subcategory": subcategory.toJson(),
       };
 }
 
@@ -377,7 +375,7 @@ class CoverPhoto {
   int height;
   String color;
   String blurHash;
-  String description;
+  dynamic description;
   String altDescription;
   List<Breadcrumb> breadcrumbs;
   Urls urls;
@@ -387,7 +385,7 @@ class CoverPhoto {
   List<dynamic> currentUserCollections;
   dynamic sponsorship;
   CoverPhotoTopicSubmissions topicSubmissions;
-  AssetType? assetType;
+  AssetType assetType;
   bool premium;
   bool plus;
   User user;
@@ -413,7 +411,7 @@ class CoverPhoto {
     required this.currentUserCollections,
     required this.sponsorship,
     required this.topicSubmissions,
-    this.assetType,
+    required this.assetType,
     required this.premium,
     required this.plus,
     required this.user,
@@ -425,9 +423,7 @@ class CoverPhoto {
         alternativeSlugs: AlternativeSlugs.fromJson(json["alternative_slugs"]),
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        promotedAt: json["promoted_at"] == null
-            ? null
-            : DateTime.parse(json["promoted_at"]),
+        promotedAt: DateTime.parse(json["promoted_at"]),
         width: json["width"],
         height: json["height"],
         color: json["color"],
@@ -445,7 +441,7 @@ class CoverPhoto {
         sponsorship: json["sponsorship"],
         topicSubmissions:
             CoverPhotoTopicSubmissions.fromJson(json["topic_submissions"]),
-        assetType: assetTypeValues.map[json["asset_type"]],
+        assetType: assetTypeValues.map[json["asset_type"]]!,
         premium: json["premium"],
         plus: json["plus"],
         user: User.fromJson(json["user"]),
@@ -481,58 +477,40 @@ class CoverPhoto {
 }
 
 class CoverPhotoTopicSubmissions {
-  CurrentEvents? experimental;
-  CurrentEvents? nature;
-  CurrentEvents? wallpapers;
-  CurrentEvents? currentEvents;
-  CurrentEvents? texturesPatterns;
+  Blue? wallpapers;
+  Blue? spirituality;
 
   CoverPhotoTopicSubmissions({
-    this.experimental,
-    this.nature,
     this.wallpapers,
-    this.currentEvents,
-    this.texturesPatterns,
+    this.spirituality,
   });
 
   factory CoverPhotoTopicSubmissions.fromJson(Map<String, dynamic> json) =>
       CoverPhotoTopicSubmissions(
-        experimental: json["experimental"] == null
-            ? null
-            : CurrentEvents.fromJson(json["experimental"]),
-        nature: json["nature"] == null
-            ? null
-            : CurrentEvents.fromJson(json["nature"]),
         wallpapers: json["wallpapers"] == null
             ? null
-            : CurrentEvents.fromJson(json["wallpapers"]),
-        currentEvents: json["current-events"] == null
+            : Blue.fromJson(json["wallpapers"]),
+        spirituality: json["spirituality"] == null
             ? null
-            : CurrentEvents.fromJson(json["current-events"]),
-        texturesPatterns: json["textures-patterns"] == null
-            ? null
-            : CurrentEvents.fromJson(json["textures-patterns"]),
+            : Blue.fromJson(json["spirituality"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "experimental": experimental?.toJson(),
-        "nature": nature?.toJson(),
         "wallpapers": wallpapers?.toJson(),
-        "current-events": currentEvents?.toJson(),
-        "textures-patterns": texturesPatterns?.toJson(),
+        "spirituality": spirituality?.toJson(),
       };
 }
 
-class CurrentEvents {
+class Blue {
   String status;
   DateTime approvedOn;
 
-  CurrentEvents({
+  Blue({
     required this.status,
     required this.approvedOn,
   });
 
-  factory CurrentEvents.fromJson(Map<String, dynamic> json) => CurrentEvents(
+  factory Blue.fromJson(Map<String, dynamic> json) => Blue(
         status: json["status"],
         approvedOn: DateTime.parse(json["approved_on"]),
       );
@@ -585,11 +563,11 @@ class User {
   String username;
   String name;
   String firstName;
-  String? lastName;
+  String lastName;
   String? twitterUsername;
   String? portfolioUrl;
   String? bio;
-  String location;
+  String? location;
   UserLinks links;
   ProfileImage profileImage;
   String? instagramUsername;
@@ -764,49 +742,31 @@ class Social {
 }
 
 class ResultTopicSubmissions {
-  Experimental? wallpapers;
-  Experimental? nature;
-  Experimental? experimental;
+  Blue? blue;
+  Blue? streetPhotography;
+  Blue? experimental;
 
   ResultTopicSubmissions({
-    this.wallpapers,
-    this.nature,
+    this.blue,
+    this.streetPhotography,
     this.experimental,
   });
 
   factory ResultTopicSubmissions.fromJson(Map<String, dynamic> json) =>
       ResultTopicSubmissions(
-        wallpapers: json["wallpapers"] == null
+        blue: json["blue"] == null ? null : Blue.fromJson(json["blue"]),
+        streetPhotography: json["street-photography"] == null
             ? null
-            : Experimental.fromJson(json["wallpapers"]),
-        nature: json["nature"] == null
-            ? null
-            : Experimental.fromJson(json["nature"]),
+            : Blue.fromJson(json["street-photography"]),
         experimental: json["experimental"] == null
             ? null
-            : Experimental.fromJson(json["experimental"]),
+            : Blue.fromJson(json["experimental"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "wallpapers": wallpapers?.toJson(),
-        "nature": nature?.toJson(),
+        "blue": blue?.toJson(),
+        "street-photography": streetPhotography?.toJson(),
         "experimental": experimental?.toJson(),
-      };
-}
-
-class Experimental {
-  String status;
-
-  Experimental({
-    required this.status,
-  });
-
-  factory Experimental.fromJson(Map<String, dynamic> json) => Experimental(
-        status: json["status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "status": status,
       };
 }
 

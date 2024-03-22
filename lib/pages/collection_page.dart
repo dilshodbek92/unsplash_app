@@ -74,7 +74,14 @@ class _CollectionPageState extends State<CollectionPage> {
             CachedNetworkImage(
               fit: BoxFit.cover,
               imageUrl: collection.coverPhoto.urls.full,
-              placeholder: (context, urls) => Center(child: CircularProgressIndicator()),
+              placeholder: (context, urls) => Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
               errorWidget: (context, urls, error) => Icon(Icons.error),
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
