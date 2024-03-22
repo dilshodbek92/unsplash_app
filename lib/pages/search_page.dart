@@ -32,7 +32,6 @@ class _SearchPageState extends State<SearchPage> {
   void _searchPhotos() {
     query = _queryController.text;
     _apiSearchPhotos(query!);
-    query = '';
   }
 
   _apiPhotos() async {
@@ -45,9 +44,9 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  _apiSearchPhotos(String query) async {
+  _apiSearchPhotos(String? query) async {
     var response = await Network.GET(
-        Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query));
+        Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query!));
     LogService.d(response!);
     LogService.d(query);
 
@@ -56,8 +55,8 @@ class _SearchPageState extends State<SearchPage> {
       searchPhotos = searchPhotosRes.results;
       isLoading = false;
     });
-    query = '${null}';
-    LogService.d(query);
+    query = null;
+    LogService.d(query!);
   }
 
   Future<void> _handleRefresh() async {
@@ -69,7 +68,7 @@ class _SearchPageState extends State<SearchPage> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return DetailsPage();
+          return  DetailsPage();
         },
       ),
     );
