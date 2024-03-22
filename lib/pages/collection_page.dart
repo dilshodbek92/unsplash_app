@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../models/collections_res.dart';
+import '../models/collections.dart';
 import '../services/http_service.dart';
+import 'collection_photos_page.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({super.key});
@@ -11,8 +12,7 @@ class CollectionPage extends StatefulWidget {
 }
 
 class _CollectionPageState extends State<CollectionPage> {
-  bool isLoading = true;
-  List<CollectionsRes> collections = [];
+  List<Collections> collections = [];
 
   @override
   void initState() {
@@ -26,8 +26,18 @@ class _CollectionPageState extends State<CollectionPage> {
     await Network.GET(Network.API_COLLECTIONS, Network.paramsCollections());
     setState(() {
       collections = Network.parseCollections(response!);
-      isLoading = false;
     });
+  }
+
+  _callCallPhotosPage(Collections collection){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return CollectionPhotosPage(collection: collection);
+        },
+      ),
+    );
   }
 
   Future<void> _handleRefresh() async {
@@ -39,7 +49,7 @@ class _CollectionPageState extends State<CollectionPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Collections'),
+        title: const Text('Collections'),
       ),
       body: Stack(
         children: [
@@ -54,17 +64,16 @@ class _CollectionPageState extends State<CollectionPage> {
               ),
             ),
           ),
-          isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : const SizedBox.shrink(),
         ],
       ),
     );
   }
 
-  Widget _itemOfCollections(CollectionsRes collection) {
+  Widget _itemOfCollections(Collections collection) {
     return GestureDetector(
-      // onTap: _callDetailsPage(),
+      onTap: (){
+        _callCallPhotosPage(collection);
+      },
       child: Container(
         margin: const EdgeInsets.only(right: 10, left: 10, bottom: 10),
         height: 250,

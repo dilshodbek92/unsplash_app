@@ -15,8 +15,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Widget> pages = <Widget>[
-    SearchPage(),
-    CollectionPage(),
+    const SearchPage(),
+    const CollectionPage(),
   ];
   int _selectedIndex = 0;
 
@@ -33,10 +33,8 @@ class _HomePageState extends State<HomePage> {
         child: pages.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: NavigationBar(
-        // backgroundColor: Colors.deepPurple,
         height: 70,
         elevation: 0,
-        // indicatorColor: Colors.blue[100],
         selectedIndex: _selectedIndex,
         destinations: const [
           NavigationDestination(icon: Icon(Iconsax.home), label: ''),

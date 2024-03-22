@@ -25,12 +25,14 @@ class _DetailsPageState extends State<DetailsPage> {
         children: [
           Container(
             decoration: const BoxDecoration(
-                image: DecorationImage(
-                    opacity: 1,
-                    image: AssetImage(
-                      'assets/images/cat.png',
-                    ),
-                    fit: BoxFit.cover)),
+              image: DecorationImage(
+                opacity: 1,
+                image: AssetImage(
+                  'assets/images/cat.png',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           Container(
             padding: EdgeInsets.all(20),

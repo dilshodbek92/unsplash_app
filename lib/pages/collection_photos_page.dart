@@ -1,39 +1,54 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import '../models/collections_photos_res.dart';
+import '../models/collections.dart';
+import '../models/collections_photos.dart';
 import '../services/http_service.dart';
 import '../services/log_service.dart';
+import 'details_page.dart';
 
 class CollectionPhotosPage extends StatefulWidget {
-  const CollectionPhotosPage({super.key});
+  final Collections? collection;
+
+  const CollectionPhotosPage({super.key, this.collection});
 
   @override
   State<CollectionPhotosPage> createState() => _CollectionPhotosPageState();
 }
 
 class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
-  // int id = 1;
   bool isLoading = true;
-  List<CollectionsPhotosRes> photos = [];
+  late Collections collection;
+  List<CollectionsPhotos> collectionPhotos = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    collection = widget.collection!;
     _apiCollectionPhotos();
   }
 
   _apiCollectionPhotos() async {
-    var response =
-    await Network.GET(Network.API_COLLECTIONS_PHOTOS.replaceFirst(':id', '2'), Network.paramsCollectionsPhotos());
-    print(response);
+    var response = await Network.GET(
+        Network.API_COLLECTIONS_PHOTOS.replaceFirst(':id', collection.id),
+        Network.paramsCollectionsPhotos());
     LogService.d(response!);
     setState(() {
-      photos = Network.parseCollectionsPhotos(response);
+      collectionPhotos = Network.parseCollectionsPhotos(response);
       isLoading = false;
     });
+  }
+
+  _callDetailsPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const DetailsPage();
+        },
+      ),
+    );
   }
 
   Future<void> _handleRefresh() async {
@@ -43,6 +58,10 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(widget.collection!.title),
+      ),
       body: Stack(
         children: [
           RefreshIndicator(
@@ -50,10 +69,10 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
             child: Container(
               padding: const EdgeInsets.only(right: 5),
               child: MasonryGridView.count(
-                itemCount: photos.length,
+                itemCount: collectionPhotos.length,
                 crossAxisCount: 2,
                 itemBuilder: (context, index) {
-                  return _itemOfPhotos(photos[index]);
+                  return _itemOfCollectionPhotos(collectionPhotos[index]);
                 },
               ),
             ),
@@ -66,11 +85,13 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
     );
   }
 
-  Widget _itemOfPhotos(CollectionsPhotosRes photos) {
+  Widget _itemOfCollectionPhotos(CollectionsPhotos photos) {
     return AspectRatio(
       aspectRatio: photos.width.toDouble() / photos.height.toDouble(),
       child: GestureDetector(
-        // onTap: _callDetailsPage(),
+        onTap: () {
+          _callDetailsPage();
+        },
         child: Container(
           margin: const EdgeInsets.only(top: 5, left: 5),
           child: CachedNetworkImage(

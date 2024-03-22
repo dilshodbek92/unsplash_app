@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import '../models/collections_photos_res.dart';
-import '../models/collections_res.dart';
+import '../models/collections_photos.dart';
+import '../models/collections.dart';
 import '../models/photos_res.dart';
 import '../models/search_photos_res.dart';
 
@@ -34,7 +34,7 @@ class Network {
     Map<String, String> params = {};
     params.addAll({
       'page': '1',
-      'per_page': '20',
+      'per_page': '10',
       'client_id': CLIENT_ID
     });
     return params;
@@ -44,6 +44,8 @@ class Network {
     Map<String, String> params = {};
     params.addAll({
       'query': query,
+      'page': '1',
+      'per_page': '10',
       'client_id': CLIENT_ID
     });
     return params;
@@ -60,7 +62,6 @@ class Network {
   static Map<String, String> paramsCollectionsPhotos() {
     Map<String, String> params = {};
     params.addAll({
-      'id': '1',
       'client_id': CLIENT_ID
     });
     return params;
@@ -77,13 +78,13 @@ class Network {
     return SearchPhotosRes.fromJson(json);
   }
 
-  static List<CollectionsRes> parseCollections(String response) {
+  static List<Collections> parseCollections(String response) {
     dynamic json = jsonDecode(response);
-    return List<CollectionsRes>.from(json.map((x) => CollectionsRes.fromJson(x)));
+    return List<Collections>.from(json.map((x) => Collections.fromJson(x)));
   }
 
-  static List<CollectionsPhotosRes> parseCollectionsPhotos(String response) {
+  static List<CollectionsPhotos> parseCollectionsPhotos(String response) {
     dynamic json = jsonDecode(response);
-    return List<CollectionsPhotosRes>.from(json.map((x) => CollectionsPhotosRes.fromJson(x)));
+    return List<CollectionsPhotos>.from(json.map((x) => CollectionsPhotos.fromJson(x)));
   }
 }

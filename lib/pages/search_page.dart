@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:unsplash_app/models/search_photos_res.dart';
 import '../models/photos_res.dart';
 import '../services/http_service.dart';
@@ -17,9 +19,8 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   String? query;
-  bool isLoading = true;
   List<PhotosRes> photos = [];
-  // List<SearchPhoto> searchPhotos = [];
+  List<SearchPhoto> searchPhotos = [];
 
   final TextEditingController _queryController = TextEditingController();
 
@@ -30,10 +31,10 @@ class _SearchPageState extends State<SearchPage> {
     _apiPhotos();
   }
 
-  // void _searchPhotos() {
-  //   query = _queryController.text;
-  //   _apiSearchPhotos(query!);
-  // }
+  void _searchPhotos() {
+    query = _queryController.text;
+    _apiSearchPhotos(query!);
+  }
 
   _apiPhotos() async {
     var response =
@@ -41,24 +42,22 @@ class _SearchPageState extends State<SearchPage> {
     LogService.d(response!);
     setState(() {
       photos = Network.parsePhotosList(response);
-      isLoading = false;
     });
   }
 
-  // _apiSearchPhotos(String? query) async {
-  //   var response = await Network.GET(
-  //       Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query!));
-  //   LogService.d(response!);
-  //   LogService.d(query);
-  //
-  //   SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response);
-  //   setState(() {
-  //     searchPhotos = searchPhotosRes.results;
-  //     isLoading = false;
-  //   });
-  //   query = null;
-  //   LogService.d(query!);
-  // }
+  _apiSearchPhotos(String? query) async {
+    var response = await Network.GET(
+        Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query!));
+    LogService.d(response!);
+    LogService.d(query);
+
+    SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response);
+    setState(() {
+      searchPhotos = searchPhotosRes.results;
+    });
+    query = null;
+    // LogService.d(query!);
+  }
 
   Future<void> _handleRefresh() async {
     _apiPhotos();
@@ -69,7 +68,7 @@ class _SearchPageState extends State<SearchPage> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return DetailsPage();
+          return const DetailsPage();
         },
       ),
     );
@@ -80,43 +79,53 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: Container(
-          height: 46,
-          padding: const EdgeInsets.only(left: 15, right: 15),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(23),
-              border:
-                  Border.all(width: 1, color: Colors.grey.withOpacity(0.5))),
+            borderRadius: BorderRadius.circular(13),
+            border: Border.all(width: 1, color: Colors.grey.withOpacity(0.5)),
+          ),
           child: TextField(
             onSubmitted: (value) {
-              // _searchPhotos();
+              _searchPhotos();
             },
+            textAlignVertical: TextAlignVertical.top,
             controller: _queryController,
             decoration: InputDecoration(
-                hintText: "Search photos, collections,users",
-                border: InputBorder.none,
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: Colors.grey,
+              hintText: "Search photos, collections, users",
+              hintStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.normal),
+              border: InputBorder.none,
+              prefixIcon: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                child: const Icon(
+                  Iconsax.search_normal,
                 ),
-                hintStyle: TextStyle(color: Colors.grey[700])),
+              ),
+            ),
           ),
         ),
       ),
       body: Stack(
         children: [
-          Container(
-            padding: const EdgeInsets.only(right: 5),
-            child: MasonryGridView.count(
-              itemCount: photos.length,
-              crossAxisCount: 2,
-              itemBuilder: (context, index) {
-                return _itemOfPhotos(photos[index]);
-              },
+          RefreshIndicator(
+            onRefresh: _handleRefresh,
+            child: Container(
+              padding: const EdgeInsets.only(right: 5),
+              child: query == null
+                  ? MasonryGridView.count(
+                      itemCount: photos.length,
+                      crossAxisCount: 2,
+                      itemBuilder: (context, index) {
+                        return _itemOfPhotos(photos[index]);
+                      },
+                    )
+                  : MasonryGridView.count(
+                      itemCount: searchPhotos.length,
+                      crossAxisCount: 2,
+                      itemBuilder: (context, index) {
+                        return _itemOfSearchPhotos(searchPhotos[index]);
+                      },
+                    ),
             ),
           ),
-          isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -124,7 +133,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _itemOfPhotos(PhotosRes photos) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         _callDetailsPage();
       },
       child: AspectRatio(
@@ -142,7 +151,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
             ),
-            errorWidget: (context, urls, error) => Icon(Icons.error),
+            errorWidget: (context, urls, error) => const Icon(Icons.error),
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -177,7 +186,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
             ),
-            errorWidget: (context, urls, error) => Icon(Icons.error),
+            errorWidget: (context, urls, error) => const Icon(Icons.error),
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
