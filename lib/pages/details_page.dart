@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       icon: const Icon(
                         Iconsax.arrow_left_3,
                         size: 30,
+                        shadows: [Shadow(color: Colors.black, blurRadius: 7.0)],
                       ),
                       color: Colors.white,
                     ),
@@ -118,6 +120,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       icon: const Icon(
                         Iconsax.info_circle,
                         size: 30,
+                        shadows: [Shadow(color: Colors.black, blurRadius: 7.0)],
                       ),
                       color: Colors.white,
                     ),
@@ -127,7 +130,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   children: [
                     Text(
                       "Kitty Cat",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 20, shadows: [Shadow(color: Colors.black, blurRadius: 3.0)],),
                     ),
                   ],
                 ),
@@ -225,6 +228,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       icon: const Icon(
                         Iconsax.send_1,
                         size: 30,
+                        shadows: [Shadow(color: Colors.black, blurRadius: 7.0)],
                       ),
                       color: Colors.white,
                     ),
@@ -236,6 +240,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           icon: const Icon(
                             Iconsax.arrow_down_2,
                             size: 30,
+                            shadows: [Shadow(color: Colors.black, blurRadius: 7.0)],
                           ),
                           color: Colors.white,
                           onPressed: () {
