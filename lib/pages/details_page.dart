@@ -51,7 +51,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       icon: const Icon(
                         Iconsax.arrow_left_3,
                         size: 30,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 7.0)],
+                        shadows: [Shadow(color: Colors.black, blurRadius: 8.0)],
                       ),
                       color: Colors.white,
                     ),
