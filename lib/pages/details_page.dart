@@ -32,13 +32,20 @@ class _DetailsPageState extends State<DetailsPage> {
     detailsPhoto = widget.detailsPhoto!;
   }
 
+  String getDescription() {
+    if (detailsPhoto.description == null) {
+      return '-';
+    }
+    return detailsPhoto.description!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: CachedNetworkImage(
@@ -77,7 +84,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           builder: (BuildContext context) {
                             return Container(
                               padding: const EdgeInsets.all(30),
-                              height: MediaQuery.of(context).size.height / 2,
+                              height: MediaQuery.of(context).size.height / 1.5,
                               width: MediaQuery.of(context).size.width,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +130,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                       Text(
                                         detailsPhoto.user.name,
                                         style: const TextStyle(
-                                            color: Colors.white, fontSize: 20),
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -135,7 +144,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     ),
                                   ),
                                   Text(
-                                    detailsPhoto.description!,
+                                    getDescription(),
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 17),
                                   ),
@@ -147,7 +156,9 @@ class _DetailsPageState extends State<DetailsPage> {
                                     ),
                                   ),
                                   Text(
-                                    detailsPhoto.createdAt.toIso8601String(),
+                                    detailsPhoto.createdAt
+                                        .toIso8601String()
+                                        .substring(0, 10),
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 18),
                                   ),

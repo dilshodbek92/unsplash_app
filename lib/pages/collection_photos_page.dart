@@ -52,13 +52,14 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
       ),
     );
   }
-  DetailsPhoto getPhoto(CollectionsPhotos photo){
+
+  DetailsPhoto getPhoto(CollectionsPhotos photo) {
     return DetailsPhoto(
       id: photo.id,
       createdAt: photo.createdAt,
       width: photo.width,
       height: photo.height,
-      description: photo.description!,
+      description: photo.description,
       urls: photo.urls,
       user: photo.user,
     );
@@ -104,6 +105,7 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
       child: GestureDetector(
         onTap: () {
           _callDetailsPage(getPhoto(photos));
+          LogService.i(photos.description.toString());
         },
         child: Container(
           margin: const EdgeInsets.only(top: 5, left: 5),
