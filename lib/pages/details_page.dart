@@ -1,23 +1,37 @@
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:unsplash_app/services/log_service.dart';
-import '../models/photos_res.dart';
+import '../models/collections_photos.dart';
+import '../models/details_photo.dart';
+import '../models/photos.dart';
 import 'package:iconsax/iconsax.dart';
 
 class DetailsPage extends StatefulWidget {
-  // final PhotosRes photos;
-  const DetailsPage({super.key});
+  DetailsPhoto? detailsPhoto;
+
+  DetailsPage({super.key, this.detailsPhoto});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+  late DetailsPhoto detailsPhoto;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    detailsPhoto = widget.detailsPhoto!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,18 +39,15 @@ class _DetailsPageState extends State<DetailsPage> {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                opacity: 1,
-                image: AssetImage(
-                  'assets/images/cat.png',
-                ),
-                fit: BoxFit.cover,
-              ),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: detailsPhoto.urls.full,
             ),
           ),
           Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -61,57 +72,98 @@ class _DetailsPageState extends State<DetailsPage> {
                       onPressed: () {
                         showModalBottomSheet(
                           scrollControlDisabledMaxHeightRatio: double.infinity,
-                          backgroundColor: Colors.black.withOpacity(0.2),
+                          backgroundColor: Colors.black.withOpacity(0.8),
                           context: context,
                           builder: (BuildContext context) {
-                            return SizedBox(
-                              height: 700,
+                            return Container(
+                              padding: const EdgeInsets.all(30),
+                              height: MediaQuery.of(context).size.height / 2,
                               width: MediaQuery.of(context).size.width,
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(
-                                        Iconsax.arrow_down,
-                                        color: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(15),
-                                      child: const Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "Cats cannot taste sweet things",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          imageUrl: detailsPhoto
+                                              .user.profileImage.medium,
+                                          placeholder: (context, urls) =>
+                                              Center(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[300],
+                                                borderRadius:
+                                                    BorderRadius.circular(25),
+                                              ),
                                             ),
-                                            Text(
-                                              "Cats can see in color",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
+                                          ),
+                                          errorWidget: (context, urls, error) =>
+                                              const Icon(Icons.error),
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
-                                            Text(
-                                              "Cats sweat through their paws",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20),
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        detailsPhoto.user.name,
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: const Text(
+                                      'Description',
+                                      style: TextStyle(color: Colors.white30),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Text(
+                                    detailsPhoto.description!,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 17),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: const Text(
+                                      'Published',
+                                      style: TextStyle(color: Colors.white30),
+                                    ),
+                                  ),
+                                  Text(
+                                    detailsPhoto.createdAt.toIso8601String(),
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: const Text(
+                                      'Dimensions',
+                                      style: TextStyle(color: Colors.white30),
+                                    ),
+                                  ),
+                                  Text(
+                                    '${detailsPhoto.width} / ${detailsPhoto.height}',
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  ),
+                                ],
                               ),
                             );
                           },
@@ -120,17 +172,9 @@ class _DetailsPageState extends State<DetailsPage> {
                       icon: const Icon(
                         Iconsax.info_circle,
                         size: 30,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 7.0)],
+                        shadows: [Shadow(color: Colors.black, blurRadius: 8.0)],
                       ),
                       color: Colors.white,
-                    ),
-                  ],
-                ),
-                const Column(
-                  children: [
-                    Text(
-                      "Kitty Cat",
-                      style: TextStyle(color: Colors.white, fontSize: 20, shadows: [Shadow(color: Colors.black, blurRadius: 3.0)],),
                     ),
                   ],
                 ),
@@ -149,11 +193,11 @@ class _DetailsPageState extends State<DetailsPage> {
                               height: 140,
                               width: MediaQuery.of(context).size.width,
                               child: Container(
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 child: Column(
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.all(10),
+                                      padding: const EdgeInsets.all(10),
                                       child: const Text(
                                         'Choose to send',
                                         style: TextStyle(
@@ -228,7 +272,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       icon: const Icon(
                         Iconsax.send_1,
                         size: 30,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 7.0)],
+                        shadows: [Shadow(color: Colors.black, blurRadius: 8.0)],
                       ),
                       color: Colors.white,
                     ),
@@ -240,7 +284,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           icon: const Icon(
                             Iconsax.arrow_down_2,
                             size: 30,
-                            shadows: [Shadow(color: Colors.black, blurRadius: 7.0)],
+                            shadows: [Shadow(color: Colors.black, blurRadius: 8.0)],
                           ),
                           color: Colors.white,
                           onPressed: () {

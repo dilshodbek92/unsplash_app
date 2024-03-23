@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import '../models/collections.dart';
 import '../models/collections_photos.dart';
+import '../models/details_photo.dart';
 import '../services/http_service.dart';
 import '../services/log_service.dart';
 import 'details_page.dart';
@@ -17,6 +18,7 @@ class CollectionPhotosPage extends StatefulWidget {
 }
 
 class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
+  DetailsPhoto? detailsPhoto;
   bool isLoading = true;
   late Collections collection;
   List<CollectionsPhotos> collectionPhotos = [];
@@ -33,21 +35,32 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
     var response = await Network.GET(
         Network.API_COLLECTIONS_PHOTOS.replaceFirst(':id', collection.id),
         Network.paramsCollectionsPhotos());
-    LogService.d(response!);
+    // LogService.d(response!);
     setState(() {
-      collectionPhotos = Network.parseCollectionsPhotos(response);
+      collectionPhotos = Network.parseCollectionsPhotos(response!);
       isLoading = false;
     });
   }
 
-  _callDetailsPage() {
+  _callDetailsPage(DetailsPhoto photo) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return const DetailsPage();
+          return DetailsPage(detailsPhoto: photo);
         },
       ),
+    );
+  }
+  DetailsPhoto getPhoto(CollectionsPhotos photo){
+    return DetailsPhoto(
+      id: photo.id,
+      createdAt: photo.createdAt,
+      width: photo.width,
+      height: photo.height,
+      description: photo.description!,
+      urls: photo.urls,
+      user: photo.user,
     );
   }
 
@@ -90,7 +103,7 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
       aspectRatio: photos.width.toDouble() / photos.height.toDouble(),
       child: GestureDetector(
         onTap: () {
-          _callDetailsPage();
+          _callDetailsPage(getPhoto(photos));
         },
         child: Container(
           margin: const EdgeInsets.only(top: 5, left: 5),

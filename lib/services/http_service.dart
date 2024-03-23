@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import '../models/collections_photos.dart';
 import '../models/collections.dart';
-import '../models/photos_res.dart';
-import '../models/search_photos_res.dart';
+import '../models/photos.dart';
+import '../models/search_photos.dart';
 
 class Network {
   static String BASE = "api.unsplash.com";
@@ -68,9 +68,9 @@ class Network {
   }
 
   /* Http Parsing */
-  static List<PhotosRes> parsePhotosList(String response) {
+  static List<Photo> parsePhotosList(String response) {
     dynamic json = jsonDecode(response);
-    return List<PhotosRes>.from(json.map((x) => PhotosRes.fromJson(x)));
+    return List<Photo>.from(json.map((x) => Photo.fromJson(x)));
   }
 
   static SearchPhotosRes parseSearchPhotos(String response) {

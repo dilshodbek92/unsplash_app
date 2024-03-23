@@ -2,43 +2,64 @@ import 'dart:convert';
 
 import 'details_photo.dart';
 
-List<CollectionsPhotos> collectionsPhotosFromJson(String str) =>
-    List<CollectionsPhotos>.from(
-        json.decode(str).map((x) => CollectionsPhotos.fromJson(x)));
+SearchPhotosRes searchPhotosResFromJson(String str) =>
+    SearchPhotosRes.fromJson(json.decode(str));
 
-String collectionsPhotosToJson(List<CollectionsPhotos> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String searchPhotosResToJson(SearchPhotosRes data) =>
+    json.encode(data.toJson());
 
-class CollectionsPhotos {
+class SearchPhotosRes {
+  int total;
+  int totalPages;
+  List<SearchPhoto> searchPhotos;
+
+  SearchPhotosRes({
+    required this.total,
+    required this.totalPages,
+    required this.searchPhotos,
+  });
+
+  factory SearchPhotosRes.fromJson(Map<String, dynamic> json) =>
+      SearchPhotosRes(
+        total: json["total"],
+        totalPages: json["total_pages"],
+        searchPhotos: List<SearchPhoto>.from(
+            json["results"].map((x) => SearchPhoto.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "total": total,
+        "total_pages": totalPages,
+        "results": List<dynamic>.from(searchPhotos.map((x) => x.toJson())),
+      };
+}
+
+class SearchPhoto {
   String id;
   DateTime createdAt;
   int width;
   int height;
   String? description;
   Urls urls;
-  int likes;
   User user;
 
-  CollectionsPhotos({
+  SearchPhoto({
     required this.id,
     required this.createdAt,
     required this.width,
     required this.height,
     required this.description,
     required this.urls,
-    required this.likes,
     required this.user,
   });
 
-  factory CollectionsPhotos.fromJson(Map<String, dynamic> json) =>
-      CollectionsPhotos(
+  factory SearchPhoto.fromJson(Map<String, dynamic> json) => SearchPhoto(
         id: json["id"],
         createdAt: DateTime.parse(json["created_at"]),
         width: json["width"],
         height: json["height"],
         description: json["description"],
         urls: Urls.fromJson(json["urls"]),
-        likes: json["likes"],
         user: User.fromJson(json["user"]),
       );
 
@@ -49,47 +70,10 @@ class CollectionsPhotos {
         "height": height,
         "description": description,
         "urls": urls.toJson(),
-        "likes": likes,
         "user": user.toJson(),
       };
 }
 
-// class Urls {
-//   String raw;
-//   String full;
-//   String regular;
-//   String small;
-//   String thumb;
-//   String smallS3;
-//
-//   Urls({
-//     required this.raw,
-//     required this.full,
-//     required this.regular,
-//     required this.small,
-//     required this.thumb,
-//     required this.smallS3,
-//   });
-//
-//   factory Urls.fromJson(Map<String, dynamic> json) => Urls(
-//         raw: json["raw"],
-//         full: json["full"],
-//         regular: json["regular"],
-//         small: json["small"],
-//         thumb: json["thumb"],
-//         smallS3: json["small_s3"],
-//       );
-//
-//   Map<String, dynamic> toJson() => {
-//         "raw": raw,
-//         "full": full,
-//         "regular": regular,
-//         "small": small,
-//         "thumb": thumb,
-//         "small_s3": smallS3,
-//       };
-// }
-//
 // class User {
 //   String name;
 //   ProfileImage profileImage;
@@ -131,5 +115,41 @@ class CollectionsPhotos {
 //         "small": small,
 //         "medium": medium,
 //         "large": large,
+//       };
+// }
+//
+// class Urls {
+//   String raw;
+//   String full;
+//   String regular;
+//   String small;
+//   String thumb;
+//   String smallS3;
+//
+//   Urls({
+//     required this.raw,
+//     required this.full,
+//     required this.regular,
+//     required this.small,
+//     required this.thumb,
+//     required this.smallS3,
+//   });
+//
+//   factory Urls.fromJson(Map<String, dynamic> json) => Urls(
+//         raw: json["raw"],
+//         full: json["full"],
+//         regular: json["regular"],
+//         small: json["small"],
+//         thumb: json["thumb"],
+//         smallS3: json["small_s3"],
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//         "raw": raw,
+//         "full": full,
+//         "regular": regular,
+//         "small": small,
+//         "thumb": thumb,
+//         "small_s3": smallS3,
 //       };
 // }
