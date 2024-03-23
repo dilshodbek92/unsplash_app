@@ -4,7 +4,7 @@
 
     <application
         android:requestLegacyExternalStorage="true"
-        android:label="unsplash_app"
+        android:label="Unsplash"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
