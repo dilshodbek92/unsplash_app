@@ -32,7 +32,8 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _apiPhotos() async {
-    var response = await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
+    var response =
+        await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
     // LogService.d(response!);
     setState(() {
       photos = Network.parsePhotosList(response!);
@@ -69,7 +70,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  DetailsPhoto getPhoto(Photo photo){
+  DetailsPhoto getPhoto(Photo photo) {
     return DetailsPhoto(
       id: photo.id,
       createdAt: photo.createdAt,
@@ -80,7 +81,8 @@ class _SearchPageState extends State<SearchPage> {
       user: photo.user,
     );
   }
-  DetailsPhoto getSearchPhoto(SearchPhoto searchPhoto){
+
+  DetailsPhoto getSearchPhoto(SearchPhoto searchPhoto) {
     return DetailsPhoto(
       id: searchPhoto.id,
       createdAt: searchPhoto.createdAt,
@@ -99,7 +101,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       // search bar
       appBar: AppBar(
         title: Container(
@@ -130,28 +131,58 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Stack(
         children: [
-          RefreshIndicator(
-            onRefresh: _handleRefresh,
-            child: Container(
-              padding: const EdgeInsets.only(right: 5),
-              child: query == null
-                  ? MasonryGridView.count(
+          query == null
+              ? RefreshIndicator(
+                  onRefresh: _handleRefresh,
+                  child: Container(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: MasonryGridView.count(
                       itemCount: photos.length,
                       crossAxisCount: 2,
                       itemBuilder: (context, index) {
                         return _itemOfPhotos(photos[index]);
                       },
-                    )
-                  : MasonryGridView.count(
-                      itemCount: searchPhotos.length,
-                      crossAxisCount: 2,
-                      itemBuilder: (context, index) {
-                        return _itemOfSearchPhotos(searchPhotos[index]);
-                      },
                     ),
-            ),
-          ),
-
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: _handleRefresh,
+                  child: searchPhotos.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  // color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(50),
+                                  image: const DecorationImage(
+                                    colorFilter:
+                                        ColorFilter.srgbToLinearGamma(),
+                                    image:
+                                        AssetImage('assets/images/no_data.jpg'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              const Text('Nothing to see here...')
+                            ],
+                          ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: MasonryGridView.count(
+                            itemCount: searchPhotos.length,
+                            crossAxisCount: 2,
+                            itemBuilder: (context, index) {
+                              return _itemOfSearchPhotos(searchPhotos[index]);
+                            },
+                          ),
+                        ),
+                ),
         ],
       ),
     );
@@ -195,9 +226,10 @@ class _SearchPageState extends State<SearchPage> {
 
   Widget _itemOfSearchPhotos(SearchPhoto searchPhotos) {
     return AspectRatio(
-      aspectRatio: searchPhotos.width.toDouble() / searchPhotos.height.toDouble(),
+      aspectRatio:
+          searchPhotos.width.toDouble() / searchPhotos.height.toDouble(),
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           _callDetailsPage(getSearchPhoto(searchPhotos));
         },
         child: Container(
