@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:unsplash_app/services/log_service.dart';
@@ -54,7 +56,7 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(25),
+            padding: const EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -66,10 +68,19 @@ class _DetailsPageState extends State<DetailsPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: const Icon(
-                        Iconsax.arrow_left_3,
-                        size: 30,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 8.0)],
+                      icon: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(25)),
+                        child: const Icon(
+                          Iconsax.arrow_left_3,
+                          size: 30,
+                          shadows: [
+                            Shadow(color: Colors.black, blurRadius: 8.0)
+                          ],
+                        ),
                       ),
                       color: Colors.white,
                     ),
@@ -180,10 +191,19 @@ class _DetailsPageState extends State<DetailsPage> {
                           },
                         );
                       },
-                      icon: const Icon(
-                        Iconsax.info_circle,
-                        size: 30,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 8.0)],
+                      icon: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(25)),
+                        child: const Icon(
+                          Iconsax.info_circle,
+                          size: 30,
+                          shadows: [
+                            Shadow(color: Colors.black, blurRadius: 8.0)
+                          ],
+                        ),
                       ),
                       color: Colors.white,
                     ),
@@ -197,82 +217,120 @@ class _DetailsPageState extends State<DetailsPage> {
                       onPressed: () {
                         showModalBottomSheet(
                           scrollControlDisabledMaxHeightRatio: double.infinity,
-                          backgroundColor: Colors.black.withOpacity(0.7),
+                          backgroundColor: Colors.white,
                           context: context,
                           builder: (BuildContext context) {
                             return SizedBox(
-                              height: 140,
+                              height: 200,
                               width: MediaQuery.of(context).size.width,
                               child: Container(
                                 padding: const EdgeInsets.all(5),
+                                // color: Colors.orange,
                                 child: Column(
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.all(10),
                                       child: const Text(
-                                        'Choose to send',
+                                        'Share this photo via',
                                         style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontSize: 19,
                                         ),
                                       ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        IconButton(
-                                          icon: const FaIcon(
-                                            FontAwesomeIcons.facebook,
-                                            color: Colors.blue,
-                                            size: 40,
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                IconButton(
+                                                  icon: const FaIcon(
+                                                    FontAwesomeIcons.facebook,
+                                                    color: Colors.blue,
+                                                    size: 40,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                const Text('Facebook')
+                                              ],
+                                            ),
                                           ),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const FaIcon(
-                                            FontAwesomeIcons.instagram,
-                                            size: 40,
-                                            color: Colors.purple,
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                IconButton(
+                                                  icon: const FaIcon(
+                                                    FontAwesomeIcons.instagram,
+                                                    color: Colors.purple,
+                                                    size: 40,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                const Text('Instagram')
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const FaIcon(
-                                            FontAwesomeIcons.telegram,
-                                            size: 40,
-                                            color: Colors.lightBlueAccent,
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                IconButton(
+                                                  icon: const FaIcon(
+                                                    FontAwesomeIcons.telegram,
+                                                    color: Colors.blue,
+                                                    size: 40,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                const Text('Telegram')
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const FaIcon(
-                                            FontAwesomeIcons.snapchat,
-                                            size: 40,
-                                            color: Colors.yellowAccent,
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                IconButton(
+                                                  icon: const FaIcon(
+                                                    FontAwesomeIcons.twitter,
+                                                    color: Colors.blue,
+                                                    size: 40,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                const Text('Twitter')
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: const FaIcon(
-                                            FontAwesomeIcons.twitter,
-                                            size: 40,
-                                            color: Colors.lightBlueAccent,
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
+                                    const SizedBox(height: 10),
+                                    Container(
+                                      width: double.infinity,
+                                      height: 40,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        color: Colors.grey[300],
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -280,10 +338,19 @@ class _DetailsPageState extends State<DetailsPage> {
                           },
                         );
                       },
-                      icon: const Icon(
-                        Iconsax.send_1,
-                        size: 30,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 8.0)],
+                      icon: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(25)),
+                        child: const Icon(
+                          Iconsax.export_3,
+                          // size: 30,
+                          shadows: [
+                            Shadow(color: Colors.black, blurRadius: 8.0)
+                          ],
+                        ),
                       ),
                       color: Colors.white,
                     ),
@@ -292,10 +359,19 @@ class _DetailsPageState extends State<DetailsPage> {
                       children: [
                         //# save image button
                         IconButton(
-                          icon: const Icon(
-                            Iconsax.arrow_down_2,
-                            size: 30,
-                            shadows: [Shadow(color: Colors.black, blurRadius: 8.0)],
+                          icon: Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.7),
+                                borderRadius: BorderRadius.circular(25)),
+                            child: const Icon(
+                              Iconsax.gallery_import,
+                              size: 25,
+                              shadows: [
+                                Shadow(color: Colors.black, blurRadius: 8.0)
+                              ],
+                            ),
                           ),
                           color: Colors.white,
                           onPressed: () {
@@ -314,15 +390,28 @@ class _DetailsPageState extends State<DetailsPage> {
       ),
     );
   }
-}
 
-_saveNetworkImage() async {
-  var response = await Dio().get(
-      "https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg",
-      options: Options(responseType: ResponseType.bytes));
-  final result = await ImageGallerySaver.saveImage(
+  static void _showToast() {
+    Fluttertoast.showToast(
+      msg: "Image saved",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 10,
+      backgroundColor: Colors.white,
+      textColor: Colors.black,
+      fontSize: 16.0,
+    );
+  }
+
+  _saveNetworkImage() async {
+    var response = await Dio().get(detailsPhoto.urls.full,
+        options: Options(responseType: ResponseType.bytes));
+    final result = await ImageGallerySaver.saveImage(
       Uint8List.fromList(response.data),
-      quality: 60,
-      name: "hello");
-  print(result);
+      quality: 80,
+      name: "unsplash_app_${detailsPhoto.id}",
+    );
+    print(result);
+    _showToast();
+  }
 }

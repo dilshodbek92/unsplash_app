@@ -35,6 +35,7 @@ class Network {
     params.addAll({
       'page': '1',
       'per_page': '20',
+      'order_by': 'latest',
       'client_id': CLIENT_ID
     });
     return params;
@@ -54,6 +55,8 @@ class Network {
   static Map<String, String> paramsCollections() {
     Map<String, String> params = {};
     params.addAll({
+      'page': '1',
+      'per_page': '20',
       'client_id': CLIENT_ID
     });
     return params;
