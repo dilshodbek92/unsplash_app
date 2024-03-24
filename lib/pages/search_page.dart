@@ -193,28 +193,31 @@ class _SearchPageState extends State<SearchPage> {
       onTap: () {
         _callDetailsPage(getPhoto(photo));
       },
-      child: AspectRatio(
-        aspectRatio: photo.width.toDouble() / photo.height.toDouble(),
-        child: Container(
-          margin: const EdgeInsets.only(top: 5, left: 5),
-          child: CachedNetworkImage(
-            fit: BoxFit.cover,
-            imageUrl: photo.urls.full,
-            placeholder: (context, urls) => Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(8),
+      child: Hero(
+        tag: photo.id,
+        child: AspectRatio(
+          aspectRatio: photo.width.toDouble() / photo.height.toDouble(),
+          child: Container(
+            margin: const EdgeInsets.only(top: 5, left: 5),
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: photo.urls.full,
+              placeholder: (context, urls) => Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
-            ),
-            errorWidget: (context, urls, error) => const Icon(Icons.error),
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
+              errorWidget: (context, urls, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -225,33 +228,36 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _itemOfSearchPhotos(SearchPhoto searchPhotos) {
-    return AspectRatio(
-      aspectRatio:
-          searchPhotos.width.toDouble() / searchPhotos.height.toDouble(),
-      child: GestureDetector(
-        onTap: () {
-          _callDetailsPage(getSearchPhoto(searchPhotos));
-        },
-        child: Container(
-          margin: const EdgeInsets.only(top: 5, left: 5),
-          child: CachedNetworkImage(
-            fit: BoxFit.cover,
-            imageUrl: searchPhotos.urls.full,
-            placeholder: (context, urls) => Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(8),
+    return Hero(
+      tag: searchPhotos.id,
+      child: AspectRatio(
+        aspectRatio:
+            searchPhotos.width.toDouble() / searchPhotos.height.toDouble(),
+        child: GestureDetector(
+          onTap: () {
+            _callDetailsPage(getSearchPhoto(searchPhotos));
+          },
+          child: Container(
+            margin: const EdgeInsets.only(top: 5, left: 5),
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: searchPhotos.urls.full,
+              placeholder: (context, urls) => Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
-            ),
-            errorWidget: (context, urls, error) => const Icon(Icons.error),
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
+              errorWidget: (context, urls, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

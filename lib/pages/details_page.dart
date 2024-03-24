@@ -47,12 +47,15 @@ class _DetailsPageState extends State<DetailsPage> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: CachedNetworkImage(
-              fit: BoxFit.cover,
-              imageUrl: detailsPhoto.urls.full,
+          Hero(
+            tag: detailsPhoto.id,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: detailsPhoto.urls.full,
+              ),
             ),
           ),
           Container(
