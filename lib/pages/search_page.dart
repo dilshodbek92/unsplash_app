@@ -16,6 +16,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  bool isLoading = true;
   DetailsPhoto? detailsPhoto;
   String? query;
   List<Photo> photos = [];
@@ -35,6 +36,7 @@ class _SearchPageState extends State<SearchPage> {
     // LogService.d(response!);
     setState(() {
       photos = Network.parsePhotosList(response!);
+      isLoading = false;
     });
   }
 
@@ -46,6 +48,7 @@ class _SearchPageState extends State<SearchPage> {
     SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
     setState(() {
       searchPhotos = searchPhotosRes.searchPhotos;
+      isLoading = false;
     });
     query = null;
   }
@@ -148,6 +151,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
             ),
           ),
+
         ],
       ),
     );

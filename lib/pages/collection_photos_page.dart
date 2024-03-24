@@ -35,9 +35,9 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
     var response = await Network.GET(
         Network.API_COLLECTIONS_PHOTOS.replaceFirst(':id', collection.id),
         Network.paramsCollectionsPhotos());
-    // LogService.d(response!);
+    LogService.d(response!);
     setState(() {
-      collectionPhotos = Network.parseCollectionsPhotos(response!);
+      collectionPhotos = Network.parseCollectionsPhotos(response);
       isLoading = false;
     });
   }
@@ -93,7 +93,28 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
           ),
           isLoading
               ? const Center(child: CircularProgressIndicator())
-              : const SizedBox.shrink(),
+              : collectionPhotos.isEmpty ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          // color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50),
+                          image: const DecorationImage(
+                            colorFilter: ColorFilter.srgbToLinearGamma(),
+                            image: AssetImage('assets/images/no_data.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      const Text('Nothing to see here...')
+                    ],
+                  ),
+                ) : SizedBox.shrink(),
         ],
       ),
     );
