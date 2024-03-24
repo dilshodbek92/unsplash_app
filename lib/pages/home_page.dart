@@ -3,9 +3,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:unsplash_app/pages/collection_page.dart';
 import 'package:unsplash_app/pages/search_page.dart';
 
-import '../services/http_service.dart';
-
 class HomePage extends StatefulWidget {
+  static const String id = 'home_page';
   const HomePage({super.key});
 
   @override
