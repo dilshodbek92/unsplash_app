@@ -59,7 +59,7 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20, top: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -138,9 +138,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
+                                      const SizedBox(width: 10),
                                       Text(
                                         detailsPhoto.user.name,
                                         style: const TextStyle(
