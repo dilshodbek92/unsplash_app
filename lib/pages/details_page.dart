@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -222,7 +221,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           context: context,
                           builder: (BuildContext context) {
                             return SizedBox(
-                              height: 200,
+                              height: 250,
                               width: MediaQuery.of(context).size.width,
                               child: Container(
                                 padding: const EdgeInsets.all(5),
@@ -315,7 +314,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(height: 10),
+                                    const SizedBox(height: 20),
                                     Container(
                                       width: double.infinity,
                                       height: 40,
@@ -365,7 +364,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             width: 50,
                             decoration: BoxDecoration(
                                 color: Colors.black.withOpacity(0.7),
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(25),),
                             child: const Icon(
                               Iconsax.gallery_import,
                               size: 25,

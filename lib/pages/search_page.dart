@@ -112,8 +112,19 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           child: TextField(
-            onSubmitted: (value) {
-              _searchPhotos();
+            // onSubmitted: (value) {
+            //   if(value == ''){
+            //     _apiPhotos();
+            //   }else{
+            //     _searchPhotos();
+            //   }
+            // },
+            onChanged: (value){
+              if(value == ''){
+                _apiPhotos();
+              }else{
+                _searchPhotos();
+              }
             },
             textAlignVertical: TextAlignVertical.top,
             controller: _queryController,

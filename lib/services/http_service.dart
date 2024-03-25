@@ -35,7 +35,7 @@ class Network {
     params.addAll({
       'page': '1',
       'per_page': '20',
-      'order_by': 'latest',
+      'order_by': 'popular',
       'client_id': CLIENT_ID
     });
     return params;
