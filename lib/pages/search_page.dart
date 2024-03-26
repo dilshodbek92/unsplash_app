@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:unsplash_app/models/search_photos.dart';
+import 'package:unsplash_app/services/log_service.dart';
 import '../models/details_photo.dart';
 import '../models/photos.dart';
 import '../services/http_service.dart';
@@ -32,26 +33,34 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _apiPhotos() async {
-    var response =
-        await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
-    // LogService.d(response!);
-    setState(() {
-      photos = Network.parsePhotosList(response!);
-      isLoading = false;
-    });
+    try {
+      var response =
+      await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
+      setState(() {
+        photos = Network.parsePhotosList(response!);
+        isLoading = false;
+      });
+      LogService.d(photos.length.toString());
+    } catch (e){
+      LogService.e(e.toString());
+    }
   }
 
   _apiSearchPhotos(String? query) async {
-    var response = await Network.GET(
-        Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query!));
-    // LogService.d(response!);
-    // LogService.d(query);
-    SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
-    setState(() {
-      searchPhotos = searchPhotosRes.searchPhotos;
-      isLoading = false;
-    });
-    query = null;
+    try {
+      var response = await Network.GET(
+          Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query!));
+      // LogService.d(response!);
+      // LogService.d(query);
+      SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
+      setState(() {
+        searchPhotos = searchPhotosRes.searchPhotos;
+        isLoading = false;
+      });
+      query = null;
+    } catch (e){
+      LogService.e(e.toString());
+    }
   }
 
   void _searchPhotos() {

@@ -1,13 +1,21 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart';
+import 'package:http_interceptor/http/intercepted_client.dart';
 import '../models/collections_photos.dart';
 import '../models/collections.dart';
 import '../models/photos.dart';
 import '../models/search_photos.dart';
+import 'http_helper.dart';
 
 class Network {
   static String BASE = "api.unsplash.com";
   static String CLIENT_ID = "_HZfRbawOhlrLnIlET3ZMHOqpc1wweEY6lcu8ThXld4";
+
+  static final client = InterceptedClient.build(
+    interceptors: [HttpInterceptor()],
+    retryPolicy: HttpRetryPolicy(),
+  );
 
   /* Http Apis*/
   static String API_PHOTOS = "/photos";
@@ -21,12 +29,35 @@ class Network {
 
   /* Http Requests */
   static Future<String?> GET(String api, Map<String, String> params) async {
-    var uri = Uri.https(BASE, api, params);
-    var response = await get(uri, headers: headers);
-    if (response.statusCode == 200) {
-      return response.body;
+    try {
+      var uri = Uri.https(BASE, api, params);
+      var response = await client.get(uri);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else {
+        _throwException(response);
+      }
+    } on SocketException catch (_) {
+      // if the network connection fails
+      rethrow;
     }
-    return null;
+  }
+
+  static _throwException(Response response) {
+    String reason = response.reasonPhrase!;
+    switch (response.statusCode) {
+      case 400:
+        throw BadRequestException(reason);
+      case 401:
+        throw InvalidInputException(reason);
+      case 403:
+        throw UnauthorisedException(reason);
+      case 404:
+        throw FetchDataException(reason);
+      case 500:
+      default:
+        throw FetchDataException(reason);
+    }
   }
 
   /* Http Params */
@@ -35,7 +66,7 @@ class Network {
     params.addAll({
       'page': '1',
       'per_page': '20',
-      'order_by': 'popular',
+      'order_by': 'latest',
       'client_id': CLIENT_ID
     });
     return params;
@@ -54,21 +85,13 @@ class Network {
 
   static Map<String, String> paramsCollections() {
     Map<String, String> params = {};
-    params.addAll({
-      'page': '1',
-      'per_page': '20',
-      'client_id': CLIENT_ID
-    });
+    params.addAll({'page': '1', 'per_page': '20', 'client_id': CLIENT_ID});
     return params;
   }
 
   static Map<String, String> paramsCollectionsPhotos() {
     Map<String, String> params = {};
-    params.addAll({
-      'page': '1',
-      'per_page': '20',
-      'client_id': CLIENT_ID
-    });
+    params.addAll({'page': '1', 'per_page': '20', 'client_id': CLIENT_ID});
     return params;
   }
 
@@ -90,6 +113,7 @@ class Network {
 
   static List<CollectionsPhotos> parseCollectionsPhotos(String response) {
     dynamic json = jsonDecode(response);
-    return List<CollectionsPhotos>.from(json.map((x) => CollectionsPhotos.fromJson(x)));
+    return List<CollectionsPhotos>.from(
+        json.map((x) => CollectionsPhotos.fromJson(x)));
   }
 }
