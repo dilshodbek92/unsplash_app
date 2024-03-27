@@ -25,6 +25,9 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   late DetailsPhoto detailsPhoto;
+  double _scale = 1.0;
+  double _previousScale = 1.0;
+  Offset _doubleTapPosition = Offset.zero;
 
   @override
   void initState() {
@@ -48,12 +51,17 @@ class _DetailsPageState extends State<DetailsPage> {
         children: [
           Hero(
             tag: detailsPhoto.id,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: detailsPhoto.urls.full,
+            child: InteractiveViewer(
+              minScale: 0.1,
+              maxScale: 3,
+              // constrained: true,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: detailsPhoto.urls.full,
+                ),
               ),
             ),
           ),
