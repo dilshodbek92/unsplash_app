@@ -5,6 +5,7 @@ import 'package:unsplash_app/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'home_page';
+
   const HomePage({super.key});
 
   @override

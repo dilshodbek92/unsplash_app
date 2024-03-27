@@ -43,7 +43,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white60,
       body: Stack(
         children: [
           Hero(
@@ -51,7 +51,7 @@ class _DetailsPageState extends State<DetailsPage> {
             child: InteractiveViewer(
               minScale: 0.1,
               maxScale: 3,
-              // constrained: true,
+              constrained: true,
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
@@ -231,7 +231,6 @@ class _DetailsPageState extends State<DetailsPage> {
                               width: MediaQuery.of(context).size.width,
                               child: Container(
                                 padding: const EdgeInsets.all(5),
-                                // color: Colors.orange,
                                 child: Column(
                                   children: [
                                     Container(
@@ -348,11 +347,11 @@ class _DetailsPageState extends State<DetailsPage> {
                         height: 50,
                         width: 50,
                         decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(25)),
+                          color: Colors.black.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                         child: const Icon(
                           Iconsax.export_3,
-                          // size: 30,
                           shadows: [
                             Shadow(color: Colors.black, blurRadius: 8.0)
                           ],
@@ -415,7 +414,7 @@ class _DetailsPageState extends State<DetailsPage> {
         options: Options(responseType: ResponseType.bytes));
     final result = await ImageGallerySaver.saveImage(
       Uint8List.fromList(response.data),
-      quality: 100,
+      quality: 80,
       name: "unsplash_app_${detailsPhoto.id}",
     );
     print(result);

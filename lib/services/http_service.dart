@@ -60,18 +60,18 @@ class Network {
     Map<String, String> params = {};
     params.addAll({
       'page': currentPage.toString(),
-      'per_page': '10',
+      'per_page': '20',
       'order_by': 'latest',
       'client_id': HttpInterceptor.CLIENT_ID
     });
     return params;
   }
 
-  static Map<String, String> paramsSearchPhotos(String query) {
+  static Map<String, String> paramsSearchPhotos(String query, int currentPage) {
     Map<String, String> params = {};
     params.addAll({
       'query': query,
-      'page': '1',
+      'page': currentPage.toString(),
       'per_page': '20',
       'client_id': HttpInterceptor.CLIENT_ID
     });
@@ -80,13 +80,21 @@ class Network {
 
   static Map<String, String> paramsCollections() {
     Map<String, String> params = {};
-    params.addAll({'page': '1', 'per_page': '20', 'client_id': HttpInterceptor.CLIENT_ID});
+    params.addAll({
+      'page': '1',
+      'per_page': '20',
+      'client_id': HttpInterceptor.CLIENT_ID
+    });
     return params;
   }
 
-  static Map<String, String> paramsCollectionsPhotos() {
+  static Map<String, String> paramsCollectionsPhotos(int currentPage) {
     Map<String, String> params = {};
-    params.addAll({'page': '1', 'per_page': '20', 'client_id': HttpInterceptor.CLIENT_ID});
+    params.addAll({
+      'page': currentPage.toString(),
+      'per_page': '20',
+      'client_id': HttpInterceptor.CLIENT_ID
+    });
     return params;
   }
 

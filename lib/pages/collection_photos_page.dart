@@ -22,6 +22,8 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
   bool isLoading = true;
   late Collections collection;
   List<CollectionsPhotos> collectionPhotos = [];
+  ScrollController scrollController = ScrollController();
+  int currentPage = 1;
 
   @override
   void initState() {
@@ -29,15 +31,24 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
     super.initState();
     collection = widget.collection!;
     _apiCollectionPhotos();
+
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent * 0.7 <=
+          scrollController.offset) {
+        print('Load next page');
+        currentPage++;
+        _apiCollectionPhotos();
+      }
+    });
   }
 
   _apiCollectionPhotos() async {
     var response = await Network.GET(
         Network.API_COLLECTIONS_PHOTOS.replaceFirst(':id', collection.id),
-        Network.paramsCollectionsPhotos());
+        Network.paramsCollectionsPhotos(currentPage));
     LogService.d(response!);
     setState(() {
-      collectionPhotos = Network.parseCollectionsPhotos(response);
+      collectionPhotos.addAll(Network.parseCollectionsPhotos(response));
       isLoading = false;
     });
   }
@@ -83,6 +94,7 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
             child: Container(
               padding: const EdgeInsets.only(right: 5),
               child: MasonryGridView.count(
+                controller: scrollController,
                 itemCount: collectionPhotos.length,
                 crossAxisCount: 2,
                 itemBuilder: (context, index) {
@@ -93,28 +105,30 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
           ),
           isLoading
               ? const Center(child: CircularProgressIndicator())
-              : collectionPhotos.isEmpty ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          // color: Colors.blue,
-                          borderRadius: BorderRadius.circular(50),
-                          image: const DecorationImage(
-                            colorFilter: ColorFilter.srgbToLinearGamma(),
-                            image: AssetImage('assets/images/no_data.jpg'),
-                            fit: BoxFit.cover,
+              : collectionPhotos.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              // color: Colors.blue,
+                              borderRadius: BorderRadius.circular(50),
+                              image: const DecorationImage(
+                                colorFilter: ColorFilter.srgbToLinearGamma(),
+                                image: AssetImage('assets/images/no_data.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 15),
+                          const Text('Nothing to see here...')
+                        ],
                       ),
-                      const SizedBox(height: 15),
-                      const Text('Nothing to see here...')
-                    ],
-                  ),
-                ) : SizedBox.shrink(),
+                    )
+                  : SizedBox.shrink(),
         ],
       ),
     );
@@ -134,7 +148,7 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
             margin: const EdgeInsets.only(top: 5, left: 5),
             child: CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: photos.urls.full,
+              imageUrl: photos.urls.regular,
               placeholder: (context, urls) => Center(
                 child: Container(
                   decoration: BoxDecoration(

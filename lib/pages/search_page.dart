@@ -34,7 +34,8 @@ class _SearchPageState extends State<SearchPage> {
     _apiPhotos();
 
     scrollController.addListener(() {
-      if(scrollController.position.maxScrollExtent * 0.7 <= scrollController.offset){
+      if (scrollController.position.maxScrollExtent * 0.7 <=
+          scrollController.offset) {
         print('Load next page');
         currentPage++;
         _apiPhotos();
@@ -44,31 +45,29 @@ class _SearchPageState extends State<SearchPage> {
 
   _apiPhotos() async {
     try {
-      var response =
-      await Network.GET(Network.API_PHOTOS, Network.paramsPhotos(currentPage));
+      var response = await Network.GET(
+          Network.API_PHOTOS, Network.paramsPhotos(currentPage));
       setState(() {
         photos.addAll(Network.parsePhotosList(response!));
         isLoading = false;
       });
       LogService.d(photos.length.toString());
-    } catch (e){
+    } catch (e) {
       LogService.e(e.toString());
     }
   }
 
   _apiSearchPhotos(String? query) async {
     try {
-      var response = await Network.GET(
-          Network.API_SEARCH_PHOTOS, Network.paramsSearchPhotos(query!));
-      // LogService.d(response!);
-      // LogService.d(query);
+      var response = await Network.GET(Network.API_SEARCH_PHOTOS,
+          Network.paramsSearchPhotos(query!, currentPage));
       SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
       setState(() {
-        searchPhotos = searchPhotosRes.searchPhotos;
+        searchPhotos.addAll(searchPhotosRes.searchPhotos);
         isLoading = false;
       });
       query = null;
-    } catch (e){
+    } catch (e) {
       LogService.e(e.toString());
     }
   }
@@ -138,10 +137,10 @@ class _SearchPageState extends State<SearchPage> {
             //     _searchPhotos();
             //   }
             // },
-            onChanged: (value){
-              if(value == ''){
+            onChanged: (value) {
+              if (value == '') {
                 _apiPhotos();
-              }else{
+              } else {
                 _searchPhotos();
               }
             },
@@ -206,6 +205,7 @@ class _SearchPageState extends State<SearchPage> {
                       : Container(
                           padding: const EdgeInsets.only(right: 5),
                           child: MasonryGridView.count(
+                            controller: scrollController,
                             itemCount: searchPhotos.length,
                             crossAxisCount: 2,
                             itemBuilder: (context, index) {
@@ -272,7 +272,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: const EdgeInsets.only(top: 5, left: 5),
             child: CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: searchPhotos.urls.full,
+              imageUrl: searchPhotos.urls.regular,
               placeholder: (context, urls) => Center(
                 child: Container(
                   decoration: BoxDecoration(

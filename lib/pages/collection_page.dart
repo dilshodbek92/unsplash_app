@@ -23,13 +23,13 @@ class _CollectionPageState extends State<CollectionPage> {
 
   _apiCollections() async {
     var response =
-    await Network.GET(Network.API_COLLECTIONS, Network.paramsCollections());
+        await Network.GET(Network.API_COLLECTIONS, Network.paramsCollections());
     setState(() {
       collections = Network.parseCollections(response!);
     });
   }
 
-  _callCallPhotosPage(Collections collection){
+  _callCallPhotosPage(Collections collection) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -71,7 +71,7 @@ class _CollectionPageState extends State<CollectionPage> {
 
   Widget _itemOfCollections(Collections collection) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         _callCallPhotosPage(collection);
       },
       child: Container(
@@ -82,7 +82,7 @@ class _CollectionPageState extends State<CollectionPage> {
           children: [
             CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: collection.coverPhoto.urls.full,
+              imageUrl: collection.coverPhoto.urls.regular,
               placeholder: (context, urls) => Center(
                 child: Container(
                   decoration: BoxDecoration(
@@ -111,8 +111,7 @@ class _CollectionPageState extends State<CollectionPage> {
                           Colors.black.withOpacity(0.5),
                           Colors.black.withOpacity(0.2),
                         ],
-                      )
-                  ),
+                      )),
                 ),
               ),
             ),
@@ -124,9 +123,18 @@ class _CollectionPageState extends State<CollectionPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(collection.title, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
+                  Text(
+                    collection.title,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500),
+                  ),
                   SizedBox(height: 5),
-                  Text("${collection.totalPhotos.toString()} photos", style: TextStyle(color: Colors.white, fontSize: 15),),
+                  Text(
+                    "${collection.totalPhotos.toString()} photos",
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
                 ],
               ),
             )

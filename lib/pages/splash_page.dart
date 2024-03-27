@@ -41,10 +41,10 @@ class _SplashPageState extends State<SplashPage> {
             height: 100,
             width: 100,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              image: DecorationImage(
-                image: AssetImage('assets/images/unsplash.jpg'),
-              ),
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                  image: AssetImage('assets/images/unsplash.jpg'),
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.2),
@@ -52,8 +52,7 @@ class _SplashPageState extends State<SplashPage> {
                     blurRadius: 7,
                     offset: Offset(0, 2), // changes position of shadow
                   ),
-                ]
-            ),
+                ]),
           ),
         ),
       ),
