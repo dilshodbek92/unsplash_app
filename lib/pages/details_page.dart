@@ -25,9 +25,6 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   late DetailsPhoto detailsPhoto;
-  double _scale = 1.0;
-  double _previousScale = 1.0;
-  Offset _doubleTapPosition = Offset.zero;
 
   @override
   void initState() {
@@ -60,13 +57,14 @@ class _DetailsPageState extends State<DetailsPage> {
                 height: MediaQuery.of(context).size.height,
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,
-                  imageUrl: detailsPhoto.urls.full,
+                  imageUrl: detailsPhoto.urls.regular,
                 ),
               ),
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20, top: 50),
+            padding:
+                const EdgeInsets.only(bottom: 20, right: 20, left: 20, top: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -371,8 +369,9 @@ class _DetailsPageState extends State<DetailsPage> {
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.7),
-                                borderRadius: BorderRadius.circular(25),),
+                              color: Colors.black.withOpacity(0.7),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
                             child: const Icon(
                               Iconsax.gallery_import,
                               size: 25,
@@ -416,7 +415,7 @@ class _DetailsPageState extends State<DetailsPage> {
         options: Options(responseType: ResponseType.bytes));
     final result = await ImageGallerySaver.saveImage(
       Uint8List.fromList(response.data),
-      quality: 80,
+      quality: 100,
       name: "unsplash_app_${detailsPhoto.id}",
     );
     print(result);

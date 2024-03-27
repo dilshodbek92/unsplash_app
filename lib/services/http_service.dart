@@ -10,22 +10,11 @@ import 'http_helper.dart';
 
 class Network {
   static String BASE = "api.unsplash.com";
-  static String CLIENT_ID = "_HZfRbawOhlrLnIlET3ZMHOqpc1wweEY6lcu8ThXld4";
 
   static final client = InterceptedClient.build(
     interceptors: [HttpInterceptor()],
     retryPolicy: HttpRetryPolicy(),
   );
-
-  /* Http Apis*/
-  static String API_PHOTOS = "/photos";
-  static String API_SEARCH_PHOTOS = "/search/photos";
-  static String API_COLLECTIONS = "/collections";
-  static String API_COLLECTIONS_PHOTOS = "/collections/:id/photos";
-
-  static Map<String, String> headers = {
-    'Content-Type': 'application/json; charset=UTF-8'
-  };
 
   /* Http Requests */
   static Future<String?> GET(String api, Map<String, String> params) async {
@@ -60,14 +49,20 @@ class Network {
     }
   }
 
+  /* Http Apis*/
+  static String API_PHOTOS = "/photos";
+  static String API_SEARCH_PHOTOS = "/search/photos";
+  static String API_COLLECTIONS = "/collections";
+  static String API_COLLECTIONS_PHOTOS = "/collections/:id/photos";
+
   /* Http Params */
-  static Map<String, String> paramsPhotos() {
+  static Map<String, String> paramsPhotos(int currentPage) {
     Map<String, String> params = {};
     params.addAll({
-      'page': '1',
-      'per_page': '20',
+      'page': currentPage.toString(),
+      'per_page': '10',
       'order_by': 'latest',
-      'client_id': CLIENT_ID
+      'client_id': HttpInterceptor.CLIENT_ID
     });
     return params;
   }
@@ -78,20 +73,20 @@ class Network {
       'query': query,
       'page': '1',
       'per_page': '20',
-      'client_id': CLIENT_ID
+      'client_id': HttpInterceptor.CLIENT_ID
     });
     return params;
   }
 
   static Map<String, String> paramsCollections() {
     Map<String, String> params = {};
-    params.addAll({'page': '1', 'per_page': '20', 'client_id': CLIENT_ID});
+    params.addAll({'page': '1', 'per_page': '20', 'client_id': HttpInterceptor.CLIENT_ID});
     return params;
   }
 
   static Map<String, String> paramsCollectionsPhotos() {
     Map<String, String> params = {};
-    params.addAll({'page': '1', 'per_page': '20', 'client_id': CLIENT_ID});
+    params.addAll({'page': '1', 'per_page': '20', 'client_id': HttpInterceptor.CLIENT_ID});
     return params;
   }
 

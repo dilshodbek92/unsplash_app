@@ -22,6 +22,8 @@ class _SearchPageState extends State<SearchPage> {
   String? query;
   List<Photo> photos = [];
   List<SearchPhoto> searchPhotos = [];
+  ScrollController scrollController = ScrollController();
+  int currentPage = 1;
 
   final TextEditingController _queryController = TextEditingController();
 
@@ -30,14 +32,22 @@ class _SearchPageState extends State<SearchPage> {
     // TODO: implement initState
     super.initState();
     _apiPhotos();
+
+    scrollController.addListener(() {
+      if(scrollController.position.maxScrollExtent * 0.7 <= scrollController.offset){
+        print('Load next page');
+        currentPage++;
+        _apiPhotos();
+      }
+    });
   }
 
   _apiPhotos() async {
     try {
       var response =
-      await Network.GET(Network.API_PHOTOS, Network.paramsPhotos());
+      await Network.GET(Network.API_PHOTOS, Network.paramsPhotos(currentPage));
       setState(() {
-        photos = Network.parsePhotosList(response!);
+        photos.addAll(Network.parsePhotosList(response!));
         isLoading = false;
       });
       LogService.d(photos.length.toString());
@@ -157,6 +167,7 @@ class _SearchPageState extends State<SearchPage> {
                   child: Container(
                     padding: const EdgeInsets.only(right: 5),
                     child: MasonryGridView.count(
+                      controller: scrollController,
                       itemCount: photos.length,
                       crossAxisCount: 2,
                       itemBuilder: (context, index) {
@@ -221,7 +232,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: const EdgeInsets.only(top: 5, left: 5),
             child: CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: photo.urls.full,
+              imageUrl: photo.urls.regular,
               placeholder: (context, urls) => Center(
                 child: Container(
                   decoration: BoxDecoration(
