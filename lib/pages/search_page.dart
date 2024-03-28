@@ -34,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
     _apiPhotos();
 
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent * 0.7 <=
+      if (scrollController.position.maxScrollExtent <=
           scrollController.offset) {
         print('Load next page');
         currentPage++;
@@ -114,6 +114,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _handleRefresh() async {
     _apiPhotos();
+    photos.clear();
   }
 
   @override
@@ -130,20 +131,21 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           child: TextField(
-            // onSubmitted: (value) {
-            //   if(value == ''){
-            //     _apiPhotos();
-            //   }else{
-            //     _searchPhotos();
-            //   }
-            // },
-            onChanged: (value) {
+            onSubmitted: (value) {
               if (value == '') {
                 _apiPhotos();
               } else {
                 _searchPhotos();
               }
+              print(value);
             },
+            // onChanged: (value) {
+            //   if (value == '') {
+            //     _apiPhotos();
+            //   } else {
+            //     _searchPhotos();
+            //   }
+            // },
             textAlignVertical: TextAlignVertical.top,
             controller: _queryController,
             decoration: InputDecoration(

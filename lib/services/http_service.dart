@@ -78,10 +78,10 @@ class Network {
     return params;
   }
 
-  static Map<String, String> paramsCollections() {
+  static Map<String, String> paramsCollections(int currentPage) {
     Map<String, String> params = {};
     params.addAll({
-      'page': '1',
+      'page': currentPage.toString(),
       'per_page': '20',
       'client_id': HttpInterceptor.CLIENT_ID
     });

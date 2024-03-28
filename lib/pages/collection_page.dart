@@ -13,17 +13,28 @@ class CollectionPage extends StatefulWidget {
 
 class _CollectionPageState extends State<CollectionPage> {
   List<Collections> collections = [];
+  ScrollController scrollController = ScrollController();
+  int currentPage = 1;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _apiCollections();
+
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent <=
+          scrollController.offset) {
+        print('Load next page');
+        currentPage++;
+        _apiCollections();
+      }
+    });
   }
 
   _apiCollections() async {
     var response =
-        await Network.GET(Network.API_COLLECTIONS, Network.paramsCollections());
+        await Network.GET(Network.API_COLLECTIONS, Network.paramsCollections(currentPage));
     setState(() {
       collections = Network.parseCollections(response!);
     });
@@ -42,6 +53,7 @@ class _CollectionPageState extends State<CollectionPage> {
 
   Future<void> _handleRefresh() async {
     _apiCollections();
+    collections.clear();
   }
 
   @override

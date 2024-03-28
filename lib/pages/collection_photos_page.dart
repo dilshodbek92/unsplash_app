@@ -78,6 +78,7 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
 
   Future<void> _handleRefresh() async {
     _apiCollectionPhotos();
+    collectionPhotos.clear();
   }
 
   @override
