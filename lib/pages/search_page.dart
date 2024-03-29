@@ -66,6 +66,7 @@ class _SearchPageState extends State<SearchPage> {
         searchPhotos.addAll(searchPhotosRes.searchPhotos);
         isLoading = false;
       });
+      LogService.d(searchPhotos.length.toString());
       query = null;
     } catch (e) {
       LogService.e(e.toString());
@@ -233,6 +234,8 @@ class _SearchPageState extends State<SearchPage> {
           child: Container(
             margin: const EdgeInsets.only(top: 5, left: 5),
             child: CachedNetworkImage(
+              memCacheHeight: 200,
+              memCacheWidth: 150,
               fit: BoxFit.cover,
               imageUrl: photo.urls.regular,
               placeholder: (context, urls) => Center(

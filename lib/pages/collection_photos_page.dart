@@ -129,7 +129,7 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
                         ],
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
         ],
       ),
     );

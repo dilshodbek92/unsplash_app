@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:unsplash_app/services/log_service.dart';
 import '../models/collections_photos.dart';
 import '../models/details_photo.dart';
@@ -220,128 +221,131 @@ class _DetailsPageState extends State<DetailsPage> {
                   children: [
                     //# share button
                     IconButton(
+                      // onPressed: () {
+                      //   showModalBottomSheet(
+                      //     scrollControlDisabledMaxHeightRatio: double.infinity,
+                      //     backgroundColor: Colors.white,
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       return SizedBox(
+                      //         height: 250,
+                      //         width: MediaQuery.of(context).size.width,
+                      //         child: Container(
+                      //           padding: const EdgeInsets.all(5),
+                      //           child: Column(
+                      //             children: [
+                      //               Container(
+                      //                 padding: const EdgeInsets.all(10),
+                      //                 child: const Text(
+                      //                   'Share this photo via',
+                      //                   style: TextStyle(
+                      //                     color: Colors.black,
+                      //                     fontSize: 19,
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //               Container(
+                      //                 margin: const EdgeInsets.symmetric(
+                      //                     horizontal: 10),
+                      //                 child: Row(
+                      //                   children: [
+                      //                     Expanded(
+                      //                       child: Column(
+                      //                         children: [
+                      //                           IconButton(
+                      //                             icon: const FaIcon(
+                      //                               FontAwesomeIcons.facebook,
+                      //                               color: Colors.blue,
+                      //                               size: 40,
+                      //                             ),
+                      //                             onPressed: () {
+                      //                               Navigator.pop(context);
+                      //                             },
+                      //                           ),
+                      //                           const Text('Facebook')
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                     Expanded(
+                      //                       child: Column(
+                      //                         children: [
+                      //                           IconButton(
+                      //                             icon: const FaIcon(
+                      //                               FontAwesomeIcons.instagram,
+                      //                               color: Colors.purple,
+                      //                               size: 40,
+                      //                             ),
+                      //                             onPressed: () {
+                      //                               Navigator.pop(context);
+                      //                             },
+                      //                           ),
+                      //                           const Text('Instagram')
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                     Expanded(
+                      //                       child: Column(
+                      //                         children: [
+                      //                           IconButton(
+                      //                             icon: const FaIcon(
+                      //                               FontAwesomeIcons.telegram,
+                      //                               color: Colors.blue,
+                      //                               size: 40,
+                      //                             ),
+                      //                             onPressed: () {
+                      //                               Navigator.pop(context);
+                      //                             },
+                      //                           ),
+                      //                           const Text('Telegram')
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                     Expanded(
+                      //                       child: Column(
+                      //                         children: [
+                      //                           IconButton(
+                      //                             icon: const FaIcon(
+                      //                               FontAwesomeIcons.twitter,
+                      //                               color: Colors.blue,
+                      //                               size: 40,
+                      //                             ),
+                      //                             onPressed: () {
+                      //                               Navigator.pop(context);
+                      //                             },
+                      //                           ),
+                      //                           const Text('Twitter')
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //               ),
+                      //               const SizedBox(height: 20),
+                      //               Container(
+                      //                 width: double.infinity,
+                      //                 height: 40,
+                      //                 margin: const EdgeInsets.symmetric(
+                      //                     horizontal: 15),
+                      //                 child: MaterialButton(
+                      //                   onPressed: () {
+                      //                     Navigator.pop(context);
+                      //                   },
+                      //                   color: Colors.grey[300],
+                      //                   child: const Text(
+                      //                     'Cancel',
+                      //                     style: TextStyle(color: Colors.black),
+                      //                   ),
+                      //                 ),
+                      //               )
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       );
+                      //     },
+                      //   );
+                      // },
                       onPressed: () {
-                        showModalBottomSheet(
-                          scrollControlDisabledMaxHeightRatio: double.infinity,
-                          backgroundColor: Colors.white,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SizedBox(
-                              height: 250,
-                              width: MediaQuery.of(context).size.width,
-                              child: Container(
-                                padding: const EdgeInsets.all(5),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      child: const Text(
-                                        'Share this photo via',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 19,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                IconButton(
-                                                  icon: const FaIcon(
-                                                    FontAwesomeIcons.facebook,
-                                                    color: Colors.blue,
-                                                    size: 40,
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                                const Text('Facebook')
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                IconButton(
-                                                  icon: const FaIcon(
-                                                    FontAwesomeIcons.instagram,
-                                                    color: Colors.purple,
-                                                    size: 40,
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                                const Text('Instagram')
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                IconButton(
-                                                  icon: const FaIcon(
-                                                    FontAwesomeIcons.telegram,
-                                                    color: Colors.blue,
-                                                    size: 40,
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                                const Text('Telegram')
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                IconButton(
-                                                  icon: const FaIcon(
-                                                    FontAwesomeIcons.twitter,
-                                                    color: Colors.blue,
-                                                    size: 40,
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                                const Text('Twitter')
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Container(
-                                      width: double.infinity,
-                                      height: 40,
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 15),
-                                      child: MaterialButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        color: Colors.grey[300],
-                                        child: const Text(
-                                          'Cancel',
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
+                        share();
                       },
                       icon: Container(
                         height: 50,
@@ -395,6 +399,10 @@ class _DetailsPageState extends State<DetailsPage> {
         ],
       ),
     );
+  }
+
+  share() async {
+    await Share.share(detailsPhoto.urls.full);
   }
 
   static void _showToast() {
