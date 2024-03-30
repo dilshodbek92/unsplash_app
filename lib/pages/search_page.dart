@@ -22,8 +22,10 @@ class _SearchPageState extends State<SearchPage> {
   String? query;
   List<Photo> photos = [];
   List<SearchPhoto> searchPhotos = [];
-  ScrollController scrollController = ScrollController();
-  int currentPage = 1;
+  ScrollController photosScrollController = ScrollController();
+  ScrollController searchPhotosScrollController = ScrollController();
+  int currentPhotosPage = 1;
+  int currentSearchPhotosPage = 1;
 
   final TextEditingController _queryController = TextEditingController();
 
@@ -31,22 +33,35 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _apiPhotos();
+    apiPhotos();
 
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent <=
-          scrollController.offset) {
+    photosScrollController.addListener(() {
+      if (photosScrollController.position.maxScrollExtent <=
+          photosScrollController.offset) {
         print('Load next page');
-        currentPage++;
-        _apiPhotos();
+        currentPhotosPage++;
+        apiPhotos();
+      }
+    });
+
+    if(query != null){
+      apiSearchPhotos(query);
+    }
+
+
+    searchPhotosScrollController.addListener(() {
+      if (searchPhotosScrollController.position.maxScrollExtent <=
+          searchPhotosScrollController.offset) {
+        print('Load next page');
+        currentSearchPhotosPage++;
+        apiSearchPhotos(query);
       }
     });
   }
 
-  _apiPhotos() async {
+  apiPhotos() async {
     try {
-      var response = await Network.GET(
-          Network.API_PHOTOS, Network.paramsPhotos(currentPage));
+      var response = await Network.GET(Network.API_PHOTOS, Network.paramsPhotos(currentPhotosPage));
       setState(() {
         photos.addAll(Network.parsePhotosList(response!));
         isLoading = false;
@@ -57,13 +72,13 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  _apiSearchPhotos(String? query) async {
+  apiSearchPhotos(String? query) async {
     try {
       var response = await Network.GET(Network.API_SEARCH_PHOTOS,
-          Network.paramsSearchPhotos(query!, currentPage));
-      SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
+          Network.paramsSearchPhotos(query!, currentSearchPhotosPage));
+      // SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
       setState(() {
-        searchPhotos.addAll(searchPhotosRes.searchPhotos);
+        searchPhotos.addAll((Network.parseSearchPhotos(response!)).searchPhotos);
         isLoading = false;
       });
       LogService.d(searchPhotos.length.toString());
@@ -74,8 +89,9 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _searchPhotos() {
+    searchPhotos.clear();
     query = _queryController.text;
-    _apiSearchPhotos(query!);
+    apiSearchPhotos(query!);
   }
 
   _callDetailsPage(DetailsPhoto photo) {
@@ -114,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Future<void> _handleRefresh() async {
-    _apiPhotos();
+    apiPhotos();
     photos.clear();
   }
 
@@ -134,17 +150,16 @@ class _SearchPageState extends State<SearchPage> {
           child: TextField(
             onSubmitted: (value) {
               if (value == '') {
-                _apiPhotos();
+                photos.clear();
+                apiPhotos();
               } else {
                 _searchPhotos();
               }
-              print(value);
             },
             // onChanged: (value) {
             //   if (value == '') {
+            //     photos.clear();
             //     _apiPhotos();
-            //   } else {
-            //     _searchPhotos();
             //   }
             // },
             textAlignVertical: TextAlignVertical.top,
@@ -163,13 +178,13 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Stack(
         children: [
-          query == null
+          (query == null)
               ? RefreshIndicator(
                   onRefresh: _handleRefresh,
                   child: Container(
                     padding: const EdgeInsets.only(right: 5),
                     child: MasonryGridView.count(
-                      controller: scrollController,
+                      controller: photosScrollController,
                       itemCount: photos.length,
                       crossAxisCount: 2,
                       itemBuilder: (context, index) {
@@ -208,7 +223,7 @@ class _SearchPageState extends State<SearchPage> {
                       : Container(
                           padding: const EdgeInsets.only(right: 5),
                           child: MasonryGridView.count(
-                            controller: scrollController,
+                            controller: searchPhotosScrollController,
                             itemCount: searchPhotos.length,
                             crossAxisCount: 2,
                             itemBuilder: (context, index) {

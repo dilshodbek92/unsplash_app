@@ -82,7 +82,7 @@ class Network {
     Map<String, String> params = {};
     params.addAll({
       'page': currentPage.toString(),
-      'per_page': '20',
+      'per_page': '10',
       'client_id': HttpInterceptor.CLIENT_ID
     });
     return params;

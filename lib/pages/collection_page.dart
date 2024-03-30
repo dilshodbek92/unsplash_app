@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../models/collections.dart';
 import '../services/http_service.dart';
+import '../services/log_service.dart';
 import 'collection_photos_page.dart';
 
 class CollectionPage extends StatefulWidget {
@@ -33,11 +34,15 @@ class _CollectionPageState extends State<CollectionPage> {
   }
 
   _apiCollections() async {
-    var response =
-        await Network.GET(Network.API_COLLECTIONS, Network.paramsCollections(currentPage));
-    setState(() {
-      collections = Network.parseCollections(response!);
-    });
+    try{
+      var response = await Network.GET(Network.API_COLLECTIONS, Network.paramsCollections(currentPage));
+      setState(() {
+        collections.addAll(Network.parseCollections(response!));
+      });
+      LogService.d(collections.length.toString());
+    } catch (e) {
+      LogService.e(e.toString());
+    }
   }
 
   _callCallPhotosPage(Collections collection) {
@@ -69,6 +74,7 @@ class _CollectionPageState extends State<CollectionPage> {
             child: RefreshIndicator(
               onRefresh: _handleRefresh,
               child: ListView.builder(
+                controller: scrollController,
                 itemCount: collections.length,
                 itemBuilder: (context, index) {
                   return _itemOfCollections(collections[index]);
@@ -114,16 +120,17 @@ class _CollectionPageState extends State<CollectionPage> {
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomRight,
-                        colors: [
-                          Colors.black.withOpacity(0.9),
-                          Colors.black.withOpacity(0.7),
-                          Colors.black.withOpacity(0.5),
-                          Colors.black.withOpacity(0.2),
-                        ],
-                      )),
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomRight,
+                      colors: [
+                        Colors.black.withOpacity(0.9),
+                        Colors.black.withOpacity(0.7),
+                        Colors.black.withOpacity(0.5),
+                        Colors.black.withOpacity(0.2),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -138,9 +145,10 @@ class _CollectionPageState extends State<CollectionPage> {
                   Text(
                     collection.title,
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500),
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   SizedBox(height: 5),
                   Text(

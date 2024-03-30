@@ -33,7 +33,7 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
     _apiCollectionPhotos();
 
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent * 0.7 <=
+      if (scrollController.position.maxScrollExtent <=
           scrollController.offset) {
         print('Load next page');
         currentPage++;
@@ -43,14 +43,19 @@ class _CollectionPhotosPageState extends State<CollectionPhotosPage> {
   }
 
   _apiCollectionPhotos() async {
-    var response = await Network.GET(
+    try {
+      var response = await Network.GET(
         Network.API_COLLECTIONS_PHOTOS.replaceFirst(':id', collection.id),
-        Network.paramsCollectionsPhotos(currentPage));
-    LogService.d(response!);
-    setState(() {
-      collectionPhotos.addAll(Network.parseCollectionsPhotos(response));
-      isLoading = false;
-    });
+        Network.paramsCollectionsPhotos(currentPage),
+      );
+      setState(() {
+        collectionPhotos.addAll(Network.parseCollectionsPhotos(response!));
+        isLoading = false;
+      });
+      LogService.d(collectionPhotos.length.toString());
+    } catch (e) {
+      LogService.e(e.toString());
+    }
   }
 
   _callDetailsPage(DetailsPhoto photo) {
