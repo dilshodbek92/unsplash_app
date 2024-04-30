@@ -16,6 +16,7 @@ import '../models/photos.dart';
 import 'package:iconsax/iconsax.dart';
 
 class DetailsPage extends StatefulWidget {
+  static const String id = 'details_page';
   DetailsPhoto? detailsPhoto;
 
   DetailsPage({super.key, this.detailsPhoto});

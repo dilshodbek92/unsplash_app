@@ -6,7 +6,7 @@ import 'log_service.dart';
 import 'http_service.dart';
 
 class HttpInterceptor implements InterceptorContract {
-  static String CLIENT_ID = "C7LYRlyB42l-IzHA1fNl945luEYHzYFpEvPVw7Xx104";
+  static String CLIENT_ID = "LE2Oyixfkigq1ebBRQj2bIM4LQnq25SafKe4CUXCJfI";
 
   // We need to intercept request
   @override

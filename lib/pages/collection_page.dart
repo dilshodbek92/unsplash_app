@@ -6,6 +6,7 @@ import '../services/log_service.dart';
 import 'collection_photos_page.dart';
 
 class CollectionPage extends StatefulWidget {
+  static const String id = 'collection_page';
   const CollectionPage({super.key});
 
   @override

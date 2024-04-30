@@ -3,7 +3,6 @@
 //     final photosListRes = photosListResFromJson(jsonString);
 
 import 'dart:convert';
-
 import 'details_photo.dart';
 
 List<Photo> photosListResFromJson(String str) => List<Photo>.from(json.decode(str).map((x) => Photo.fromJson(x)));

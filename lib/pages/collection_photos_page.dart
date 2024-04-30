@@ -9,6 +9,7 @@ import '../services/log_service.dart';
 import 'details_page.dart';
 
 class CollectionPhotosPage extends StatefulWidget {
+  static const String id = 'collection_photos_page';
   final Collections? collection;
 
   const CollectionPhotosPage({super.key, this.collection});

@@ -10,6 +10,7 @@ import '../services/http_service.dart';
 import 'details_page.dart';
 
 class SearchPage extends StatefulWidget {
+  static const String id = 'search_page';
   const SearchPage({super.key});
 
   @override
@@ -38,21 +39,18 @@ class _SearchPageState extends State<SearchPage> {
     photosScrollController.addListener(() {
       if (photosScrollController.position.maxScrollExtent <=
           photosScrollController.offset) {
-        print('Load next page');
         currentPhotosPage++;
         apiPhotos();
       }
     });
 
-    if(query != null){
+    if (query != null) {
       apiSearchPhotos(query);
     }
-
 
     searchPhotosScrollController.addListener(() {
       if (searchPhotosScrollController.position.maxScrollExtent <=
           searchPhotosScrollController.offset) {
-        print('Load next page');
         currentSearchPhotosPage++;
         apiSearchPhotos(query);
       }
@@ -61,7 +59,8 @@ class _SearchPageState extends State<SearchPage> {
 
   apiPhotos() async {
     try {
-      var response = await Network.GET(Network.API_PHOTOS, Network.paramsPhotos(currentPhotosPage));
+      var response = await Network.GET(
+          Network.API_PHOTOS, Network.paramsPhotos(currentPhotosPage));
       setState(() {
         photos.addAll(Network.parsePhotosList(response!));
         isLoading = false;
@@ -76,7 +75,6 @@ class _SearchPageState extends State<SearchPage> {
     try {
       var response = await Network.GET(Network.API_SEARCH_PHOTOS,
           Network.paramsSearchPhotos(query!, currentSearchPhotosPage));
-      // SearchPhotosRes searchPhotosRes = Network.parseSearchPhotos(response!);
       setState(() {
         searchPhotos.addAll((Network.parseSearchPhotos(response!)).searchPhotos);
         isLoading = false;
